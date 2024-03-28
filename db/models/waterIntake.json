@@ -1,0 +1,20 @@
+{
+  "_id": "ObjectId('5f50c31b8e7b9e432c3fb8b2')",
+  "userId": "ObjectId('5f50c31b8e7b9e432c3fb8b5')",
+  "entryDate": "2024-03-27T23:53:44.000Z",
+  "dailyWaterGoal": 2500,
+  "consumedWater": 500,
+  "consumedWaterPercentage": 20,
+  "dwaterIntakes": [
+    {
+      "_id": "ObjectId('5f50c31b8e7b9e432c3fb8b3')",
+      "ml": 300,
+      "addedAt": "2024-03-27T18:00:00.000Z"
+    },
+    {
+      "_id": "ObjectId('5f50c31b8e7b9e432c3fb8b4')",
+      "ml": 200,
+      "addedAt": "2024-03-27T18:30:00.000Z"
+    }
+  ]
+}
