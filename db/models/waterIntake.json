@@ -5,7 +5,7 @@
   "dailyWaterGoal": 2500,
   "consumedWater": 500,
   "consumedWaterPercentage": 20,
-  "dwaterIntakes": [
+  "waterIntakes": [
     {
       "_id": "ObjectId('5f50c31b8e7b9e432c3fb8b3')",
       "ml": 300,
