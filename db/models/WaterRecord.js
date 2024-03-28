@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const waterIntakeSchema = new Schema(
+const waterRecordSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -18,12 +18,17 @@ const waterIntakeSchema = new Schema(
     },
     consumedWater: {
       type: Number,
-      required: true,
+      default: 0,
+    },
+    consumedTimes: {
+      type: Number,
+      default: 0,
+      min: [0, "Percentage of water cannot be negative"],
     },
     consumedWaterPercentage: {
       type: Number,
-      required: true,
-      min: [0, "Percentage of water cannot be negative"],
+      default: 0,
+      min: [0, "Number of water intakes cannot be negative"],
     },
     waterIntakes: [
       {
@@ -33,7 +38,7 @@ const waterIntakeSchema = new Schema(
           min: [0, "Amount of water cannot be negative"],
           max: [5000, "Amount of water cannot exceed 5 liters"],
         },
-        addedAt: {
+        consumedAt: {
           type: Date,
           required: true,
         },
@@ -45,4 +50,4 @@ const waterIntakeSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model("WaterIntake", waterIntakeSchema);
+module.exports = mongoose.model("WaterRecord", waterRecordSchema);

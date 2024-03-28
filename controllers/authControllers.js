@@ -89,54 +89,6 @@ export const logoutUser = async (req, res, next) => {
   }
 };
 
-export const getCurrentUser = async (req, res, next) => {
-  try {
-    const currentUser = await usersServ.getCurrentUser(req.user.id);
-    const { email, subscription } = currentUser;
-
-    res.send({ email, subscription });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const updateUser = async (req, res, next) => {
-  try {
-    if (!Object.keys(req.body).length) {
-      throw HttpError(400, "Body must have at least one field");
-    }
-
-    const newUser = await usersServ.updateUser(req.user.id, req.body);
-
-    res.json(newUser);
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const uploadAvatar = async (req, res, next) => {
-  try {
-    if (!req.file) {
-      throw HttpError(400, "Select an avatar file to upload");
-    }
-
-    await resizeImage(req.file.path, 250, 250);
-
-    fs.rename(
-      req.file.path,
-      path.join(process.cwd(), "public", "avatars", req.file.filename)
-    );
-
-    const avatarURL = path.join("avatars", req.file.filename);
-    await usersServ.updateUser(req.user.id, {
-      avatarURL,
-    });
-    res.send({ avatarURL });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const verificateUser = async (req, res, next) => {
   const { verificationToken } = req.params;
   try {

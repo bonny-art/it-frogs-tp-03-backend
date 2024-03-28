@@ -22,10 +22,20 @@ const createToken = async (id) => {
   return token;
 };
 
-export const createUser = async ({ email, password }) => {
+export const createUser = async ({
+  email,
+  password,
+  avatarURL,
+  verificationToken,
+}) => {
   const hashedPassword = await bcryptjs.hash(password, 10);
 
-  const user = new User({ email, password: hashedPassword });
+  const user = new User({
+    email,
+    password: hashedPassword,
+    avatarURL,
+    verificationToken,
+  });
   await user.save();
 
   return user;
@@ -63,5 +73,12 @@ export const updateUser = async (userId, newUserInfo) => {
   const updatedUser = await User.findByIdAndUpdate(userId, newUserInfo, {
     new: true,
   });
+
   return updatedUser;
+};
+
+export const verifyUser = async (verificationToken) => {
+  const user = await User.findOne({ verificationToken });
+
+  return user;
 };

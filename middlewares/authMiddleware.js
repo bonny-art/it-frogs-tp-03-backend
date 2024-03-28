@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 import HttpError from "../helpers/HttpError.js";
 
-import { getUserById } from "./userServices.js";
+import { getUserById } from "../services/userServices.js";
 
 export const auth = async (req, res, next) => {
   const headerAuth = req.headers.authorization;

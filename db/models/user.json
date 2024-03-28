@@ -4,6 +4,7 @@
   "password": "securepassword123",
   "name": "Олександра Коваленко",
   "gender": "woman",
+  "dailyWaterGoal": 5000,
   "token": null,
   "avatarURL": "https://example.com/path/to/avatar.jpg",
   "verify": false,

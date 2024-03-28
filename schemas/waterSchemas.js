@@ -1,12 +1,12 @@
 import Joi from "joi";
 
-export const createWaterIntakeSchema = Joi.object({
+export const createWaterRecSchema = Joi.object({
   // name: Joi.string().required(),
   // email: Joi.string().email().required(),
   // phone: Joi.string().required(),
 });
 
-export const updateWaterIntakeSchema = Joi.object({
+export const updateWaterRecSchema = Joi.object({
   // name: Joi.string(),
   // email: Joi.string().email(),
   // phone: Joi.string(),
