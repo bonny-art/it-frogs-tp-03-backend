@@ -12,3 +12,11 @@ export const updateWaterRecSchema = Joi.object({
   // phone: Joi.string(),
   // favorite: Joi.boolean(),
 });
+
+
+export const waterSchema = Joi.object({
+  entryDate: Joi.date().iso().required(),
+  userId: Joi.string().alphanum().required()
+});
+
+
