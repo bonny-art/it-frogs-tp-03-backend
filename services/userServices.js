@@ -25,6 +25,7 @@ const createToken = async (id) => {
 export const createUser = async ({
   email,
   password,
+  name,
   avatarURL,
   verificationToken,
 }) => {
@@ -33,6 +34,7 @@ export const createUser = async ({
   const user = new User({
     email,
     password: hashedPassword,
+    name,
     avatarURL,
     verificationToken,
   });

@@ -2,7 +2,13 @@ import express from "express";
 
 import validateBody from "../helpers/validateBody.js";
 
-import { createUserSchema, loginUserSchema } from "../schemas/usersSchemas.js";
+import { auth } from "../middlewares/authMiddleware.js";
+
+import {
+  createUserSchema,
+  loginUserSchema,
+  reVerificateUserSchema,
+} from "../schemas/authSchemas.js";
 
 import {
   createUser,
@@ -10,9 +16,7 @@ import {
   logoutUser,
   reVerificateUser,
   verificateUser,
-} from "../controllers/usersControllers.js";
-
-import { auth } from "../services/authServices.js";
+} from "../controllers/authControllers.js";
 
 const authRouter = express.Router();
 

@@ -1,17 +1,16 @@
-import fs from "fs/promises";
-import path from "path";
 import gravatar from "gravatar";
 import crypto from "node:crypto";
 
 import HttpError from "../helpers/HttpError.js";
 import * as usersServ from "../services/userServices.js";
-import { resizeImage } from "../services/imageServices.js";
+
 import { sendMail } from "../services/sendMailServices.js";
 
 export const createUser = async (req, res, next) => {
   try {
     const { email } = req.body;
     const normalizedEmail = email.toLowerCase();
+    const name = normalizedEmail.split("@")[0];
     const user = await usersServ.isUserExistant(normalizedEmail);
     if (user) {
       throw HttpError(409, "Email in use");
@@ -24,6 +23,7 @@ export const createUser = async (req, res, next) => {
     const newUser = await usersServ.createUser({
       ...req.body,
       email: normalizedEmail,
+      name,
       avatarURL,
       verificationToken,
     });
@@ -33,57 +33,8 @@ export const createUser = async (req, res, next) => {
     res.status(201).send({
       user: {
         email: newUser.email,
-        subscription: newUser.subscription,
       },
     });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const loginUser = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    const normalizedEmail = email.toLowerCase();
-
-    const user = await usersServ.isUserExistant(normalizedEmail);
-
-    if (!user) {
-      throw HttpError(401, "Email or password is wrong");
-    }
-
-    const isPasswordValid = await usersServ.isPasswordValid(
-      password,
-      user.password
-    );
-
-    if (!isPasswordValid) {
-      throw HttpError(401, "Email or password is wrong");
-    }
-
-    if (user.verify === false) {
-      throw HttpError(401, "Your email is not verified");
-    }
-
-    const loggedInUser = await usersServ.loginUser(user);
-
-    res.send({
-      token: loggedInUser.token,
-      user: {
-        email: loggedInUser.email,
-        subscription: loggedInUser.subscription,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const logoutUser = async (req, res, next) => {
-  try {
-    await usersServ.logoutUser(req.user.id);
-
-    res.status(204).end();
   } catch (error) {
     next(error);
   }
@@ -129,11 +80,61 @@ export const reVerificateUser = async (req, res, next) => {
       throw HttpError(400, "Verification has already been passed");
     }
 
-    sendMail(req, user);
+    // sendMail(req, user);
 
     res.send({
       message: "Verification email sent",
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const loginUser = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const normalizedEmail = email.toLowerCase();
+
+    const user = await usersServ.isUserExistant(normalizedEmail);
+
+    if (!user) {
+      throw HttpError(401, "Email or password is wrong");
+    }
+
+    const isPasswordValid = await usersServ.isPasswordValid(
+      password,
+      user.password
+    );
+
+    if (!isPasswordValid) {
+      throw HttpError(401, "Email or password is wrong");
+    }
+
+    if (user.verify === false) {
+      throw HttpError(401, "Your email is not verified");
+    }
+
+    const loggedInUser = await usersServ.loginUser(user);
+
+    res.send({
+      token: loggedInUser.token,
+      user: {
+        email: loggedInUser.email,
+        name: loggedInUser.name,
+        dailyWaterGoal: loggedInUser.dailyWaterGoal,
+        avatarURL: loggedInUser.avatarURL,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logoutUser = async (req, res, next) => {
+  try {
+    await usersServ.logoutUser(req.user.id);
+
+    res.status(204).end();
   } catch (error) {
     next(error);
   }

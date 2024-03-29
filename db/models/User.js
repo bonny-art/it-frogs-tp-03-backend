@@ -25,14 +25,15 @@ const userSchema = new Schema(
       default: 2000,
       max: [15000, "Water rate must not exceed 15 liters"],
     },
-    token: {
-      type: String,
-      default: null,
-    },
     avatarURL: {
       type: String,
       required: true,
     },
+    token: {
+      type: String,
+      default: null,
+    },
+
     verify: {
       type: Boolean,
       default: false,

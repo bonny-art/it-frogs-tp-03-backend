@@ -3,29 +3,24 @@ import express from "express";
 import validateBody from "../helpers/validateBody.js";
 import validateID from "../helpers/validateID.js";
 
-import validateBody from "../helpers/validateBody.js";
-
-import validateID from "../helpers/validateID.js";
+import { waterRecSchema } from "../schemas/waterSchemas.js";
 import {
-  createWaterRecSchema,
-  updateWaterRecSchema,
-} from "../schemas/waterSchemas.js";
+  createWaterRecord,
+  deleteWaterRecord,
+  updateWaterRecord,
+} from "../controllers/waterControllers.js";
 
 const waterRouter = express.Router();
 
-waterRouter.post("/", validateBody(createWaterRecSchema), createWaterRecord);
+waterRouter.post("/", validateBody(waterRecSchema), createWaterRecord);
 
 waterRouter.put(
   "/:waterRecordId",
   validateID,
-  validateBody(updateWaterRecSchema),
+  validateBody(waterRecSchema),
   updateWaterRecord
 );
 
 waterRouter.delete("/:waterRecordId", validateID, deleteWaterRecord);
-
-waterRouter.get("/today", getTodayWaterRecords);
-
-waterRouter.get("/monthly", getMonthlyWaterRecords);
 
 export default waterRouter;
