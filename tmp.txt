@@ -1,0 +1,19 @@
+post    "/auth/register"                        createUser              body: {email, password}
+get     "/auth/verify/:verificationToken"       verificateUser          
+post    "/auth/verify"                          reVerificateUser        body: {email}
+post    "/auth/login"                           loginUser               body: {email, password}
+post    "/auth/logout"                          logoutUser              
+
+patch   "/user/avatars"                         uploadAvatar            body: {file}
+get     "/user/current"                         getCurrentUser          
+patch   "/user"                                 updateUser              body: {email, name, gender}
+
+patch   "/waterrate"                            updateWaterRate         body: {date, dailyWaterGoal}
+
+post    "/water"                                createWaterRecord       body: {date, ml}
+put     "/water/:waterRecordId"                 updateWaterRecord       body: {date, ml}
+delete  "/water/:waterRecordId"                 deleteWaterRecord       
+
+get     "/today"                                getTodayWaterRecord     params: date
+
+get     "/month"                                getMonthWaterRecords    params: startDate, endDate
