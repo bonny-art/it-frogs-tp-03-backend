@@ -1,7 +1,7 @@
-const {WaterRecord} = require("../db/models/WaterRecord");
+import {WaterRecord} from ("../db/models/WaterRecord");
 
-const waterRecordServices = async (entryDate, userId) => {
-    return await WaterRecord.findOne({entryDate, userId})
+export const waterRecordServices = async (params) => {
+    return await WaterRecord.findOne({params})
   };
 
-  module.exports = {waterRecordServices};
+ 
