@@ -5,7 +5,8 @@ import cors from "cors";
 // import routes from "./routes/index.js";
 
 import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "./swagger.json" assert { type: "json" };
+import swaggerDocument from "./swagger_templ.json" assert { type: "json" };
+// import swaggerDocument from "./swagger.json" assert { type: "json" };
 
 const app = express();
 
