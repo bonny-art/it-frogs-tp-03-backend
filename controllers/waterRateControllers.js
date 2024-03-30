@@ -1,9 +1,6 @@
-// import HttpError from "../helpers/HttpError.js";
+import * as waterRecordServices from "../services/waterServices.js";
+import * as userServices from "../services/userServices.js";
 
-export const updateWaterRate = async (req, res, next) => {
-  try {
-    res.send("Water rate was updated.");
-  } catch (error) {
-    next(error);
-  }
-};
+// TODO make waterRate controller
+
+export const updateWaterRate = async (req, res, next) => {};

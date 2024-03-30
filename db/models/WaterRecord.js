@@ -50,4 +50,4 @@ const waterRecordSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model("WaterRecord", waterRecordSchema);
+export const WaterRecord = model("WaterRecord", waterRecordSchema);

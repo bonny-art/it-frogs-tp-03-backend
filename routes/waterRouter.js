@@ -5,22 +5,22 @@ import validateID from "../helpers/validateID.js";
 
 import { waterRecSchema } from "../schemas/waterSchemas.js";
 import {
-  createWaterRecord,
-  deleteWaterRecord,
-  updateWaterRecord,
+  createWaterIntakeRecord,
+  deleteWaterIntakeRecord,
+  updateWaterIntakeRecord,
 } from "../controllers/waterControllers.js";
 
 const waterRouter = express.Router();
 
-waterRouter.post("/", validateBody(waterRecSchema), createWaterRecord);
+waterRouter.post("/", validateBody(waterRecSchema), createWaterIntakeRecord);
 
 waterRouter.put(
   "/:waterRecordId",
   validateID,
   validateBody(waterRecSchema),
-  updateWaterRecord
+  updateWaterIntakeRecord
 );
 
-waterRouter.delete("/:waterRecordId", validateID, deleteWaterRecord);
+waterRouter.delete("/:waterRecordId", validateID, deleteWaterIntakeRecord);
 
 export default waterRouter;
