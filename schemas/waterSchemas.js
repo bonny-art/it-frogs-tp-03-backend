@@ -1,6 +1,6 @@
 import Joi from "joi";
 
 export const waterRecSchema = Joi.object({
-  date: Joi.string().required(),
+  data: Joi.date().required(),
   ml: Joi.number().required(),
 });
