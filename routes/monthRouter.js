@@ -1,9 +1,11 @@
 import express from "express";
+import validateBody from "../helpers/validateBody.js";
+import { getMonthWater } from "../controllers/monthControllers.js";
+import { updateWaterRateSchema } from "../schemas/waterRateSchemas.js";
 
-import { getMonthWaterRecords } from "../controllers/monthControllers.js";
 
 const waterRouter = express.Router();
 
-waterRouter.get("/", getMonthWaterRecords);
+waterRouter.get("/", validateBody(updateWaterRateSchema), getMonthWater);
 
 export default waterRouter;
