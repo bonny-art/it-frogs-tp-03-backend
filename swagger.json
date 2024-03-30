@@ -1,0 +1,233 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.1",
+    "title": "Water Tracker",
+    "description": "A web application that allows you to track daily water consumption"
+  },
+  "servers": [{ "url": "https://tracker-of-water-oqqk.onrender.com" }],
+  "tags": [
+    {
+      "name": "API Doc",
+      "description": "Api documentation"
+    },
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "User",
+      "description": "User profile endpoints"
+    },
+    {
+      "name": "WaterRate",
+      "description": "User water norm endpoints"
+    },
+    {
+      "name": "Water",
+      "description": "User water data endpoints"
+    },
+
+    {
+      "name": "WaterToday",
+      "description": "User water today data endpoints"
+    },
+    {
+      "name": "WaterMonth",
+      "description": "User water month data endpoints"
+    }
+  ],
+  "paths": {
+    "/api-docs": {
+      "get": {
+        "tags": ["API Doc"],
+        "summary": "API documentation (this document)",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/auth/verify/{verificationToken}": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User verification",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/auth/verify": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User re-verification",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User login",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/user/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user profile",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/user/avatars": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Change user avatar",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/user": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Update user profile",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/waterrate": {
+      "patch": {
+        "tags": ["WaterRate"],
+        "summary": "Change water goal",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/water": {
+      "post": {
+        "tags": ["Water"],
+        "summary": "Create water record",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/water/{waterRecordId}": {
+      "put": {
+        "tags": ["Water"],
+        "summary": "Change water record",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Water"],
+        "summary": "Delete user water record",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/today": {
+      "get": {
+        "tags": ["WaterToday"],
+        "summary": "Get current date water record",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/month": {
+      "get": {
+        "tags": ["WaterMonth"],
+        "summary": "Get month water record",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    }
+  }
+}
