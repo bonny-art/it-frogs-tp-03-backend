@@ -4,6 +4,19 @@ const { ObjectId } = mongoose.Types;
 import { WaterRecord } from "../db/models/WaterRecord.js";
 
 // TODO make findWaterRecord and updateWaterRecord services
+export const findWaterRecord = async (params) => {
+  const waterRecord = await WaterRecord.findOne(params);
+
+  return waterRecord;
+};
+
+export const updateWaterRecord = async (params, payload) => {
+  const waterRecord = await WaterRecord.findOneAndUpdate(params, payload, {
+    new: true,
+  });
+
+  return waterRecord;
+};
 
 export const findOrCreateWaterRecord = async (params, update, options) => {
   const waterRecord = await WaterRecord.findOneAndUpdate(
