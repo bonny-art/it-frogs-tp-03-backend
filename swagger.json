@@ -42,6 +42,9 @@
       "get": {
         "tags": ["API Doc"],
         "summary": "API documentation (this document)",
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -55,6 +58,9 @@
       "get": {
         "tags": ["Auth"],
         "summary": "User verification",
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -68,10 +74,28 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User registration",
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful operation",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -81,6 +105,12 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User re-verification",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -94,6 +124,18 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User login",
+
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginRequest" }
+            }
+          }
+        },
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -107,6 +149,11 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User logout",
+
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -120,6 +167,9 @@
       "get": {
         "tags": ["User"],
         "summary": "Get user profile",
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -133,6 +183,9 @@
       "patch": {
         "tags": ["User"],
         "summary": "Change user avatar",
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -146,6 +199,20 @@
       "patch": {
         "tags": ["User"],
         "summary": "Update user profile",
+
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
+              }
+            }
+          }
+        },
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -159,6 +226,9 @@
       "patch": {
         "tags": ["WaterRate"],
         "summary": "Change water goal",
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -172,6 +242,9 @@
       "post": {
         "tags": ["Water"],
         "summary": "Create water record",
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -185,6 +258,9 @@
       "put": {
         "tags": ["Water"],
         "summary": "Change water record",
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -196,6 +272,9 @@
       "delete": {
         "tags": ["Water"],
         "summary": "Delete user water record",
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -209,6 +288,9 @@
       "get": {
         "tags": ["WaterToday"],
         "summary": "Get current date water record",
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -217,15 +299,115 @@
         }
       }
     },
+
     "/month": {
       "get": {
         "tags": ["WaterMonth"],
         "summary": "Get month water record",
+
+        "requestBody": {},
+
         "responses": {
           "200": {
             "description": "Successful operation",
             "content": {}
           }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "pAsSwOrD!"
+          }
+        }
+      },
+
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user@gmail.com"
+          }
+        }
+      },
+
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "pAsSwOrD!"
+          }
+        }
+      },
+
+      "ReverificateRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user@example.com"
+          }
+        }
+      },
+
+      "UserUpdateRequest": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user@gmail.com"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Adam"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "pAsSwOrD!"
+          }
+        }
+      },
+
+      "securitySchemes": {
+        "Bearer": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
         }
       }
     }

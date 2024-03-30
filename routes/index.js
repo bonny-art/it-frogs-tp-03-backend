@@ -12,7 +12,7 @@ import { auth } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.use("/apidocs", apiDocsRoutes);
+router.use("/", apiDocsRoutes);
 router.use("/auth", authRoutes);
 router.use("/user", auth, userRoutes);
 router.use("/waterrate", auth, waterRateRoutes);
