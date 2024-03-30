@@ -1,11 +1,11 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.1",
+    "version": "1.0.2",
     "title": "Water Tracker",
     "description": "A web application that allows you to track daily water consumption"
   },
-  "servers": [{ "url": "https://tracker-of-water-oqqk.onrender.com" }],
+  "servers": [{ "url": "https://tracker-of-water-oqqk.onrender.com/api" }],
   "tags": [
     {
       "name": "API Doc",
