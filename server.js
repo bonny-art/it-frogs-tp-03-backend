@@ -4,7 +4,7 @@ import app from "./app.js";
 const { PORT } = process.env;
 
 const startServer = async () => {
-  // await connectDB();
+  await connectDB();
 
   app.listen(PORT, (error) => {
     if (error) {
