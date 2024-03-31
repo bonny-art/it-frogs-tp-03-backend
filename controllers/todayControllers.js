@@ -22,7 +22,7 @@ export const getTodayWaterRecord = async (req, res, next) => {
   };
 
   try {
-    const dailyWater = await waterServices.findOrCreateWaterRecord(
+    const dailyWater = await waterServices.findOrCreateAndUpdateWaterRecord(
       params,
       update,
       options

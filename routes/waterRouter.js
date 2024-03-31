@@ -5,14 +5,14 @@ import validateID from "../helpers/validateID.js";
 
 import { waterRecSchema } from "../schemas/waterSchemas.js";
 import {
-  createWaterIntakeRecord,
-  deleteWaterIntakeRecord,
+  addWaterIntakeRecord,
+  removeWaterIntakeRecord,
   updateWaterIntakeRecord,
 } from "../controllers/waterControllers.js";
 
 const waterRouter = express.Router();
 
-waterRouter.post("/", validateBody(waterRecSchema), createWaterIntakeRecord);
+waterRouter.post("/", validateBody(waterRecSchema), addWaterIntakeRecord);
 
 waterRouter.put(
   "/:waterRecordId",
@@ -21,6 +21,6 @@ waterRouter.put(
   updateWaterIntakeRecord
 );
 
-waterRouter.delete("/:waterRecordId", validateID, deleteWaterIntakeRecord);
+waterRouter.delete("/:waterRecordId", validateID, removeWaterIntakeRecord);
 
 export default waterRouter;
