@@ -54,11 +54,10 @@ export const addWaterIntake = async (params, payload) => {
   return waterRecord;
 };
 
-
 export const getMonthWaterRecords = async (userId, startDate, endDate) => {
   const waterRecords = await WaterRecord.find(
     {
-      userId: userId, 
+      userId: userId,
       entryDate: {
         $gte: new Date(startDate),
         $lt: new Date(endDate),
@@ -101,11 +100,11 @@ export const getMonthWaterRecords = async (userId, startDate, endDate) => {
 
 // export const getMonth = async (year, month, userId) => {
 //   const selectedDates = await WaterRecord.find({
-//       date: { $regex: new RegExp(`${month} ${year}`, 'i') }, 
+//       date: { $regex: new RegExp(`${month} ${year}`, 'i') },
 //       userId,
 //   }).select(['entryDate', 'dailyWaterGoal', 'consumedWater', 'consumedTimes', 'consumedWaterPercentage']);
-//   if (selectedDates.length === 0) { 
-//       throw new HttpError(404, "No entries for this month"); 
+//   if (selectedDates.length === 0) {
+//       throw new HttpError(404, "No entries for this month");
 //   }
 //   return selectedDates;
 // };
