@@ -56,10 +56,10 @@ export const addWaterIntake = async (params, payload) => {
 export const getMonthWaterRecords = async (userId, startDate, endDate) => {
   const waterRecords = await WaterRecord.find(
     {
-      userId: ObjectId(userId),
+      userId: userId,
       entryDate: {
         $gte: new Date(startDate),
-        $lte: new Date(endDate),
+        $lt: new Date(endDate),
       },
     },
     {
@@ -74,3 +74,4 @@ export const getMonthWaterRecords = async (userId, startDate, endDate) => {
 
   return waterRecords;
 };
+
