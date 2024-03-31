@@ -17,7 +17,11 @@ export const updateWaterRecord = async (params, payload) => {
   return waterRecord;
 };
 
-export const findOrCreateWaterRecord = async (params, update, options) => {
+export const findOrCreateAndUpdateWaterRecord = async (
+  params,
+  update,
+  options
+) => {
   const waterRecord = await WaterRecord.findOneAndUpdate(
     params,
     update,
@@ -35,7 +39,7 @@ export const createWaterRecord = async (payload) => {
 };
 
 export const addWaterIntake = async (params, payload) => {
-  const { ml, consumedAt, newConsumedWaterPercentage } = payload;
+  const { ml, consumedAt, waterPercentage } = payload;
 
   const waterRecord = await WaterRecord.findOneAndUpdate(
     params,
@@ -43,15 +47,17 @@ export const addWaterIntake = async (params, payload) => {
       $inc: {
         consumedWater: +ml,
         consumedTimes: +1,
-        consumedWaterPercentage: +newConsumedWaterPercentage,
       },
       $push: { waterIntakes: { ml, consumedAt } },
+      $set: { consumedWaterPercentage: waterPercentage },
     },
     { new: true }
   );
 
   return waterRecord;
 };
+
+export const removeWaterIntake = async (params, payload) => {};
 
 export const getMonthWaterRecords = async (userId, startDate, endDate) => {
   const waterRecords = await WaterRecord.find(
