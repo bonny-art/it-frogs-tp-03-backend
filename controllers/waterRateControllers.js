@@ -32,4 +32,3 @@ export const updateWaterRate = async (req, res, next) => {
     next(error);
   }
 };
-

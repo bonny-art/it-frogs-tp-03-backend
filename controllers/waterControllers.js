@@ -1,6 +1,5 @@
 import * as waterServices from "../services/waterServices.js";
 
-
 export const createWaterIntakeRecord = async (req, res, next) => {
   const { data, ml } = req.body;
 

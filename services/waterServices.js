@@ -59,7 +59,7 @@ export const getMonthWaterRecords = async (userId, startDate, endDate) => {
       userId: userId,
       entryDate: {
         $gte: new Date(startDate),
-        $lt: new Date(endDate),
+        $lte: new Date(endDate),
       },
     },
     {
@@ -74,4 +74,3 @@ export const getMonthWaterRecords = async (userId, startDate, endDate) => {
 
   return waterRecords;
 };
-
