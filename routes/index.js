@@ -1,5 +1,6 @@
 import express from "express";
 
+import apiDocsRoutes from "./apiDocsRoutes.js";
 import authRoutes from "./authRouter.js";
 import userRoutes from "./userRouter.js";
 import waterRateRoutes from "./waterRateRouter.js";
@@ -11,6 +12,7 @@ import { auth } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
+router.use("/", apiDocsRoutes);
 router.use("/auth", authRoutes);
 router.use("/user", auth, userRoutes);
 router.use("/waterrate", auth, waterRateRoutes);

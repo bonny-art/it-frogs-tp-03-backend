@@ -1,5 +1,5 @@
 // import HttpError from "../helpers/HttpError.js";
-import * as waterRecordServices from "../services/waterServices.js";
+import * as waterServices from "../services/waterServices.js";
 
 export const getTodayWaterRecord = async (req, res, next) => {
   const entryDate = new Date(req.query.date);
@@ -22,7 +22,7 @@ export const getTodayWaterRecord = async (req, res, next) => {
   };
 
   try {
-    const dailyWater = await waterRecordServices.findOrCreateWaterRecord(
+    const dailyWater = await waterServices.findOrCreateWaterRecord(
       params,
       update,
       options
