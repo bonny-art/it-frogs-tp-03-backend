@@ -1,5 +1,4 @@
-// import HttpError from "../helpers/HttpError.js";
-import * as waterRecordServices from "../services/waterServices.js";
+import * as waterServices from "../services/waterServices.js";
 
 export const createWaterIntakeRecord = async (req, res, next) => {
   const { data, ml } = req.body;
@@ -25,10 +24,7 @@ export const createWaterIntakeRecord = async (req, res, next) => {
       newConsumedWaterPercentage,
     };
 
-    const newDailyWater = await waterRecordServices.addWaterIntake(
-      params,
-      payload
-    );
+    const newDailyWater = await waterServices.addWaterIntake(params, payload);
 
     res.send({ newDailyWater });
   } catch (error) {
