@@ -140,4 +140,43 @@ export const logoutUser = async (req, res, next) => {
   }
 };
 
+export const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const user = await usersServ.forgotPassword(email);
 
+    if (!user) {
+      throw HttpError(404, "User not found");
+    }
+
+    const { verificationToken } = user;
+
+    const resetPasswordUrl = `http://localhost:8080/api/auth/recover-password?token=${verificationToken}`;
+
+    sendMail({
+      to: email,
+      subject: "Reset Password Instructions",
+      text: `To reset your password, please click on the following link: ${resetPasswordUrl}`,
+    });
+
+    res.status(200).json({
+      message:
+        "Password reset instructions have been sent to your email. Please check your inbox.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changePassword = async (req, res, next) => {
+  try {
+    const { changePasswordToken } = req.params;
+    const { newPassword } = req.body;
+
+    await usersServ.changeUserPassword(changePasswordToken, newPassword);
+
+    res.status(200).json({ message: "Password changed successfully." });
+  } catch (error) {
+    next(error);
+  }
+};

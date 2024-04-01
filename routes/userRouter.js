@@ -9,8 +9,6 @@ import {
   uploadAvatar,
   getCurrentUser,
   updateUser,
-  forgotPassword,
-  changePassword,
 } from "../controllers/userControllers.js";
 
 const userRouter = express.Router();
@@ -21,16 +19,6 @@ userRouter.get("/current", getCurrentUser);
 
 userRouter.patch("/", validateBody(updateUserSchema), updateUser);
 
-userRouter.post(
-  "/forgot-password",
-  validateBody(updateUserSchema),
-  forgotPassword
-);
 
-userRouter.post(
-  "/forgot-password/:changePasswordToken",
-  validateBody(updateUserSchema),
-  changePassword
-);
 
 export default userRouter;
