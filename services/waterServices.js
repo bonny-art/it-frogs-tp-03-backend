@@ -115,7 +115,9 @@ export const getMonthWaterRecords = async (userId, startDate, endDate) => {
       consumedWaterPercentage: 1,
       _id: 0,
     }
-  ).lean();
+  )
+    .sort({ entryDate: 1 })
+    .lean();
 
   return waterRecords;
 };
