@@ -56,3 +56,26 @@ export const updateUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const forgotPassword = async (req, res) => {
+  const user = await usersServ.forgotPassword(req.body.email);
+
+  try {
+    await new Email(user, user.verificationToken).forgotPass();
+  } catch (error) {
+    console.log(error);
+  }
+
+  res.status(200).json({
+    message: "Password reset instructions have been sent to your email.",
+  });
+};
+
+export const changePassword = async (req, res) => {
+  const { changePasswordToken } = req.params;
+  const { newPassword } = req.body;
+
+  await usersServ.changeUserPassword(changePasswordToken, newPassword);
+
+  res.status(200).json({ message: "Password changed successfully." });
+};

@@ -84,3 +84,32 @@ export const verifyUser = async (verificationToken) => {
 
   return user;
 };
+
+export const forgotPassword = async (email) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw HttpError(404, "User not found");
+  }
+
+  user.verificationToken = uuidv4();
+
+  return user.save();
+};
+
+export const changeUserPassword = async (changePasswordToken, newPassword) => {
+  if (!changePasswordToken || !newPassword) {
+    throw HttpError(400, "Bad request");
+  }
+  const user = await User.findOne({ verificationToken: changePasswordToken });
+
+  if (!user) {
+    throw HttpError(404, "User not found");
+  }
+  user.password = newPassword;
+  user.verificationToken = null;
+
+  await user.save();
+
+  return user;
+};
