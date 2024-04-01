@@ -116,7 +116,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User e-mail",
+                    "format": "email",
+                    "example": "user@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "pAsSwOrD!"
+                  }
+                }
               }
             }
           }
@@ -128,7 +142,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse"
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "description": "User email",
+                      "format": "email",
+                      "example": "user@gmail.com"
+                    }
+                  }
                 }
               }
             }
@@ -144,7 +166,25 @@
 
         "parameters": [],
 
-        "requestBody": {},
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "format": "email",
+                    "example": "user@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
 
         "responses": {
           "200": {
@@ -166,7 +206,23 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/LoginRequest" }
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "format": "email",
+                    "example": "user@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "pAsSwOrD!"
+                  }
+                }
+              }
             }
           }
         },
@@ -298,7 +354,26 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserUpdateRequest"
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "format": "email",
+                    "example": "user@gmail.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "User name",
+                    "example": "Adam"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "pAsSwOrD!"
+                  }
+                }
               }
             }
           }
@@ -445,25 +520,25 @@
           },
           "email": {
             "type": "string",
-            "description": "User's email",
+            "description": "User email",
             "format": "email",
             "example": "user@gmail.com"
           },
           "password": {
             "type": "string",
-            "description": "User's password",
+            "description": "User password",
             "example": "pAsSwOrD!"
           },
           "gender": {
             "type": "string",
-            "description": "User's gender",
+            "description": "User gender",
             "enum": ["woman", "man"],
             "default": "woman",
             "example": "woman"
           },
           "avatarURL": {
             "type": "string",
-            "description": "User's avatar",
+            "description": "User avatar",
             "default": ""
           },
           "verificationToken": {
@@ -473,18 +548,18 @@
           },
           "token": {
             "type": "string",
-            "description": "User's JWT string",
+            "description": "User JWT string",
             "default": null
           },
           "verify": {
             "type": "boolean",
-            "description": "Is the user's e-mail address verified?",
+            "description": "Is the User e-mail address verified?",
             "default": false
           },
           "dailyWaterGoal": {
             "type": "integer",
             "format": "int32",
-            "description": "User's daily water norma",
+            "description": "User daily water norma",
             "minimum": 0,
             "maximum": 15000,
             "default": 2000,
@@ -495,14 +570,13 @@
 
       "WaterRecord (db)": {
         "type": "object",
-        "required": ["entryDate"],
+        "required": ["userId", "entryDate"],
         "properties": {
           "userId": {
             "type": "string",
-            "format": "",
-            "description": "",
-            "default": "",
-            "example": ""
+            "format": "ObjectId",
+            "description": "Backend-generated unique identifier",
+            "example": "ObjectId('5f50c31b8e7b9e432c3fb8c3')"
           },
           "entryDate": {
             "type": "string",
@@ -513,7 +587,7 @@
           "dailyWaterGoal": {
             "type": "integer",
             "format": "int32",
-            "description": "User's daily water norma",
+            "description": "User daily water norma",
             "minimum": 0,
             "maximum": 15000,
             "default": 2000,
@@ -530,7 +604,7 @@
           "consumedTimes": {
             "type": "integer",
             "format": "int32",
-            "description": "User's water consumption amount (times)",
+            "description": "User water consumption amount (times)",
             "minimum": 0,
             "default": 0,
             "example": 4
@@ -538,7 +612,7 @@
           "consumedWaterPercentage": {
             "type": "integer",
             "format": "int32",
-            "description": "User's water consumption percent (relative to the norm)",
+            "description": "User water consumption percent (relative to the norm)",
             "minimum": 0,
             "default": 0,
             "example": 80
@@ -547,12 +621,18 @@
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["ml", "consumedAt"],
+              "required": ["_id", "ml", "consumedAt"],
               "properties": {
+                "_id": {
+                  "type": "string",
+                  "format": "ObjectId",
+                  "description": "Backend-generated unique identifier",
+                  "example": "ObjectId('5f50c31b8e7b9e432c3fb8c3')"
+                },
                 "ml": {
                   "type": "integer",
                   "format": "int32",
-                  "description": "User's water consumption amount (ml)",
+                  "description": "User water consumption amount (ml)",
                   "minimum": 0,
                   "maximum": 5000,
                   "example": 250
@@ -560,95 +640,11 @@
                 "consumedAt": {
                   "type": "string",
                   "format": "date-time",
-                  "description": "User's water consumption date and time",
+                  "description": "User water consumption date and time",
                   "example": "2022-02-24T08:30:00Z"
                 }
               }
             }
-          }
-        }
-      },
-
-      "RegistrationRequest": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "pAsSwOrD!"
-          }
-        }
-      },
-
-      "RegistrationResponse": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@gmail.com"
-          }
-        }
-      },
-
-      "LoginRequest": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "pAsSwOrD!"
-          }
-        }
-      },
-
-      "ReverificateRequest": {
-        "type": "object",
-        "required": ["email"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@example.com"
-          }
-        }
-      },
-
-      "UserUpdateRequest": {
-        "type": "object",
-        "required": [],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@gmail.com"
-          },
-          "name": {
-            "type": "string",
-            "description": "User's name",
-            "example": "Adam"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "pAsSwOrD!"
           }
         }
       }

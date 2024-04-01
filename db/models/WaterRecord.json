@@ -19,14 +19,3 @@
     }
   ]
 }
-
-
-  [
-    {
-      "entryDate": "2024-03-29",
-      "dailyWaterGoal": 2500,
-"consumedWater": 500,
-"consumedTimes": 2,
-        "consumedWaterPercentage": 20,
-    }
-  ]
