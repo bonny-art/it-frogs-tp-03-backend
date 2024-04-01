@@ -113,3 +113,13 @@ export const changeUserPassword = async (changePasswordToken, newPassword) => {
 
   return user;
 };
+
+export const isValidChangePasswordToken = async (changePasswordToken) => {
+  const user = await User.findOne({ changePasswordToken });
+
+  if (user) {
+    return true;
+  } else {
+    return false;
+  }
+};

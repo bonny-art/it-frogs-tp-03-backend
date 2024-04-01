@@ -149,9 +149,13 @@ export const forgotPassword = async (req, res, next) => {
       throw HttpError(404, "User not found");
     }
 
-    const { verificationToken } = user;
+    const changePasswordToken = crypto.randomUUID();
 
-    const resetPasswordUrl = `http://localhost:8080/api/auth/recover-password?token=${verificationToken}`;
+    await user.updateOne({ changePasswordToken });
+
+    delete user.verificationToken;
+
+    const resetPasswordUrl = `http://localhost:8080/api/auth/recover-password?token=${changePasswordToken}`;
 
     sendMail({
       to: email,
@@ -173,7 +177,18 @@ export const changePassword = async (req, res, next) => {
     const { changePasswordToken } = req.params;
     const { newPassword } = req.body;
 
-    await usersServ.changeUserPassword(changePasswordToken, newPassword);
+    const isValidToken = await usersServ.isValidChangePasswordToken(
+      changePasswordToken
+    );
+
+    if (!isValidToken) {
+      throw HttpError(404, "Invalid or expired token");
+    }
+
+    const user = await usersServ.changeUserPassword(
+      changePasswordToken,
+      newPassword
+    );
 
     res.status(200).json({ message: "Password changed successfully." });
   } catch (error) {
