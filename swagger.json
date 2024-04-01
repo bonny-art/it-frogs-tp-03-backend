@@ -59,9 +59,15 @@
         "tags": ["Auth"],
         "summary": "User e-mail verification",
 
-        "parameters": [],
-
-        "requestBody": {},
+        "parameters": [
+          {
+            "type": "string",
+            "name": "token",
+            "in": "query",
+            "description": "Verification token from e-mail ",
+            "required": true
+          }
+        ],
 
         "responses": {
           "200": {
