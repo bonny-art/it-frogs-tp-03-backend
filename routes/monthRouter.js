@@ -5,6 +5,6 @@ import { updateWaterRateSchema } from "../schemas/waterRateSchemas.js";
 
 const waterRouter = express.Router();
 
-waterRouter.get("/", validateBody(updateWaterRateSchema), getMonthWaterRecords);
+waterRouter.get("/", getMonthWaterRecords);
 
 export default waterRouter;
