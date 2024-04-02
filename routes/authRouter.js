@@ -16,6 +16,8 @@ import {
   logoutUser,
   reVerificateUser,
   verificateUser,
+  forgotPassword,
+  changePassword,
 } from "../controllers/authControllers.js";
 
 const authRouter = express.Router();
@@ -33,5 +35,9 @@ authRouter.post(
 authRouter.post("/login", validateBody(loginUserSchema), loginUser);
 
 authRouter.post("/logout", auth, logoutUser);
+
+authRouter.post("/recover-password", forgotPassword);
+
+authRouter.post("/recover-password/:changePasswordToken", changePassword);
 
 export default authRouter;
