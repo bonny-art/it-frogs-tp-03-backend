@@ -69,7 +69,7 @@ export const makeEmailVerificationLetterHTML = (req, user) => {
       <p>Please click the button below to confirm your email address ${user.email}:</p>
       <a href="${verificationPath}" class="confirm-button">Confirm Email</a>
       <p>If the button above does not work, please copy the following link and paste it into your browser's address bar to proceed:</p>
-      <p><a href="${verificationPath}">${verificationPath}
+      <p><a href="${verificationPath}">${verificationPath}</a></p>
       <h2>Why Stay Hydrated?</h2>
       <ul>
         <li>Supply of nutrients to all organs</li>
