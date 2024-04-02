@@ -19,6 +19,4 @@ userRouter.get("/current", getCurrentUser);
 
 userRouter.patch("/", validateBody(updateUserSchema), updateUser);
 
-
-
 export default userRouter;
