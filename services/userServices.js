@@ -8,8 +8,8 @@ export const getUserById = async (id) => {
   return user;
 };
 
-export const getUserByProperty = async (prop, value) => {
-  const user = await User.findOne({ [prop]: value });
+export const getUserByProperty = async (query) => {
+  const user = await User.findOne(query);
 
   return user;
 };
@@ -76,6 +76,7 @@ export const logoutUser = async (userId) => {
 export const updateUser = async (userId, newUserInfo) => {
   const updatedUser = await User.findByIdAndUpdate(userId, newUserInfo, {
     new: true,
+    runValidators: true,
   });
 
   return updatedUser;

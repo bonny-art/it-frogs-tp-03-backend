@@ -27,6 +27,7 @@ export const addWaterIntakeRecord = async (req, res, next) => {
   const options = {
     new: true,
     upsert: true,
+    runValidators: true,
   };
 
   try {

@@ -12,6 +12,7 @@ export const findWaterRecord = async (params) => {
 export const updateWaterRecord = async (params, payload) => {
   const waterRecord = await WaterRecord.findOneAndUpdate(params, payload, {
     new: true,
+    runValidators: true,
   });
 
   return waterRecord;
@@ -51,7 +52,10 @@ export const addWaterIntake = async (params, payload) => {
       $push: { waterIntakes: { ml, consumedAt } },
       $set: { consumedWaterPercentage: waterPercentage },
     },
-    { new: true }
+    {
+      new: true,
+      runValidators: true,
+    }
   );
 
   return waterRecord;
@@ -73,6 +77,7 @@ export const updateWaterIntake = async (params, payload) => {
     {
       arrayFilters: [{ "elem._id": _id }],
       new: true,
+      runValidators: true,
     }
   );
 
