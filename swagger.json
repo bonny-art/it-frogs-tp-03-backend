@@ -8,7 +8,7 @@
   "servers": [{ "url": "https://tracker-of-water-oqqk.onrender.com/api" }],
   "tags": [
     {
-      "name": "API Doc",
+      "name": "API-Docs",
       "description": "Api documentation"
     },
     {
@@ -40,7 +40,7 @@
   "paths": {
     "/api-docs": {
       "get": {
-        "tags": ["API Doc"],
+        "tags": ["API-Docs"],
         "summary": "API documentation (this document)",
 
         "requestBody": {},
@@ -57,14 +57,56 @@
     "/auth/verify/{verificationToken}": {
       "get": {
         "tags": ["Auth"],
-        "summary": "User verification",
+        "summary": "User e-mail verification",
 
-        "requestBody": {},
+        "parameters": [
+          {
+            "type": "string",
+            "name": "token",
+            "in": "query",
+            "description": "Verification token from e-mail ",
+            "required": true
+          }
+        ],
 
         "responses": {
           "200": {
             "description": "Successful operation",
             "content": {}
+          }
+        }
+      }
+    },
+
+    "/auth/recover-password/{passwordRecoveryToken}": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Send e-mail for recovery user password",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": ""
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": ""
+                }
+              }
+            }
           }
         }
       }
@@ -80,7 +122,173 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User e-mail",
+                    "format": "email",
+                    "example": "user@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "pAsSwOrD!"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "description": "User email",
+                      "format": "email",
+                      "example": "user@gmail.com"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/auth/verify": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User re-verification",
+
+        "parameters": [],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "format": "email",
+                    "example": "user@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User login",
+
+        "parameters": [],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "format": "email",
+                    "example": "user@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "pAsSwOrD!"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "204": {
+            "description": "User is logout"
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Email or password is wrong"
+          }
+        }
+      }
+    },
+
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {},
+
+        "responses": {
+          "204": {
+            "description": "User is logout"
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        }
+      }
+    },
+
+    "/auth/recover-password/": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Recovery user password",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": ""
               }
             }
           }
@@ -101,72 +309,13 @@
       }
     },
 
-    "/auth/verify": {
-      "post": {
-        "tags": ["Auth"],
-        "summary": "User re-verification",
-
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-
-        "requestBody": {},
-
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {}
-          }
-        }
-      }
-    },
-
-    "/auth/login": {
-      "post": {
-        "tags": ["Auth"],
-        "summary": "User login",
-
-        "security": [{ "Bearer": [] }],
-
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/LoginRequest" }
-            }
-          }
-        },
-
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {}
-          }
-        }
-      }
-    },
-
-    "/auth/logout": {
-      "post": {
-        "tags": ["Auth"],
-        "summary": "User logout",
-
-        "security": [{ "Bearer": [] }],
-
-        "requestBody": {},
-
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {}
-          }
-        }
-      }
-    },
-
     "/user/current": {
       "get": {
         "tags": ["User"],
         "summary": "Get user profile",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
 
         "requestBody": {},
 
@@ -184,6 +333,9 @@
         "tags": ["User"],
         "summary": "Change user avatar",
 
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
         "requestBody": {},
 
         "responses": {
@@ -200,6 +352,7 @@
         "tags": ["User"],
         "summary": "Update user profile",
 
+        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
@@ -207,7 +360,26 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserUpdateRequest"
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "format": "email",
+                    "example": "user@gmail.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "User name",
+                    "example": "Adam"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "pAsSwOrD!"
+                  }
+                }
               }
             }
           }
@@ -227,6 +399,9 @@
         "tags": ["WaterRate"],
         "summary": "Change water goal",
 
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
         "requestBody": {},
 
         "responses": {
@@ -242,6 +417,9 @@
       "post": {
         "tags": ["Water"],
         "summary": "Create water record",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
 
         "requestBody": {},
 
@@ -259,6 +437,9 @@
         "tags": ["Water"],
         "summary": "Change water record",
 
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
         "requestBody": {},
 
         "responses": {
@@ -272,6 +453,9 @@
       "delete": {
         "tags": ["Water"],
         "summary": "Delete user water record",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
 
         "requestBody": {},
 
@@ -287,7 +471,10 @@
     "/today": {
       "get": {
         "tags": ["WaterToday"],
-        "summary": "Get current date water record",
+        "summary": "Get current date water records",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
 
         "requestBody": {},
 
@@ -303,7 +490,10 @@
     "/month": {
       "get": {
         "tags": ["WaterMonth"],
-        "summary": "Get month water record",
+        "summary": "Get month water records",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
 
         "requestBody": {},
 
@@ -319,96 +509,158 @@
 
   "components": {
     "schemas": {
-      "RegistrationRequest": {
+      "User (db)": {
         "type": "object",
-        "required": ["email", "password"],
+        "required": [
+          "name",
+          "email",
+          "password",
+          "avatarURL",
+          "verificationToken"
+        ],
         "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "pAsSwOrD!"
-          }
-        }
-      },
-
-      "RegistrationResponse": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@gmail.com"
-          }
-        }
-      },
-
-      "LoginRequest": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "pAsSwOrD!"
-          }
-        }
-      },
-
-      "ReverificateRequest": {
-        "type": "object",
-        "required": ["email"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@example.com"
-          }
-        }
-      },
-
-      "UserUpdateRequest": {
-        "type": "object",
-        "required": [],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@gmail.com"
-          },
           "name": {
             "type": "string",
-            "description": "User's name",
-            "example": "Adam"
+            "description": "User name",
+            "example": "Olexandra"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "format": "email",
+            "example": "user@gmail.com"
           },
           "password": {
             "type": "string",
-            "description": "User's password",
+            "description": "User password",
             "example": "pAsSwOrD!"
+          },
+          "gender": {
+            "type": "string",
+            "description": "User gender",
+            "enum": ["woman", "man"],
+            "default": "woman",
+            "example": "woman"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "User avatar",
+            "default": ""
+          },
+          "verificationToken": {
+            "type": "string",
+            "description": "e-mail verification token",
+            "default": ""
+          },
+          "token": {
+            "type": "string",
+            "description": "User JWT string",
+            "default": null
+          },
+          "verify": {
+            "type": "boolean",
+            "description": "Is the User e-mail address verified?",
+            "default": false
+          },
+          "dailyWaterGoal": {
+            "type": "integer",
+            "format": "int32",
+            "description": "User daily water norma",
+            "minimum": 0,
+            "maximum": 15000,
+            "default": 2000,
+            "example": 5000
           }
         }
       },
 
-      "securitySchemes": {
-        "Bearer": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
+      "WaterRecord (db)": {
+        "type": "object",
+        "required": ["userId", "entryDate"],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "ObjectId",
+            "description": "Backend-generated unique identifier",
+            "example": "ObjectId('5f50c31b8e7b9e432c3fb8c3')"
+          },
+          "entryDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time of data entry",
+            "example": "2022-02-24T08:30:00Z"
+          },
+          "dailyWaterGoal": {
+            "type": "integer",
+            "format": "int32",
+            "description": "User daily water norma",
+            "minimum": 0,
+            "maximum": 15000,
+            "default": 2000,
+            "example": 2500
+          },
+          "consumedWater": {
+            "type": "integer",
+            "format": "int32",
+            "description": "User water consumption amount (ml)",
+            "minimum": 0,
+            "default": 0,
+            "example": 250
+          },
+          "consumedTimes": {
+            "type": "integer",
+            "format": "int32",
+            "description": "User water consumption amount (times)",
+            "minimum": 0,
+            "default": 0,
+            "example": 4
+          },
+          "consumedWaterPercentage": {
+            "type": "integer",
+            "format": "int32",
+            "description": "User water consumption percent (relative to the norm)",
+            "minimum": 0,
+            "default": 0,
+            "example": 80
+          },
+          "waterIntakes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["_id", "ml", "consumedAt"],
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "format": "ObjectId",
+                  "description": "Backend-generated unique identifier",
+                  "example": "ObjectId('5f50c31b8e7b9e432c3fb8c3')"
+                },
+                "ml": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "User water consumption amount (ml)",
+                  "minimum": 0,
+                  "maximum": 5000,
+                  "example": 250
+                },
+                "consumedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "User water consumption date and time",
+                  "example": "2022-02-24T08:30:00Z"
+                }
+              }
+            }
+          }
         }
+      }
+    },
+
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

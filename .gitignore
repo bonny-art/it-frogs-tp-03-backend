@@ -9,3 +9,6 @@ tmp/*
 public/avatars/*
 !public/avatars/.gitkeep
 
+swagger_external.json
+swagger_templ.json
+swagger_old.json
