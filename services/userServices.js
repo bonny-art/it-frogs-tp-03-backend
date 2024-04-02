@@ -3,13 +3,14 @@ import bcryptjs from "bcryptjs";
 
 import { User } from "../db/models/User.js";
 
-export const isUserExistant = async (email) => {
-  const user = await User.findOne({ email });
+export const getUserById = async (id) => {
+  const user = await User.findById(id);
   return user;
 };
 
-export const getUserById = async (id) => {
-  const user = await User.findById(id);
+export const getUserByProperty = async (prop, value) => {
+  const user = await User.findOne({ [prop]: value });
+
   return user;
 };
 
@@ -22,6 +23,12 @@ const createToken = async (id) => {
   return token;
 };
 
+export const hashPassword = async (password) => {
+  const hashedPassword = await bcryptjs.hash(password, 10);
+
+  return hashedPassword;
+};
+
 export const createUser = async ({
   email,
   password,
@@ -29,7 +36,7 @@ export const createUser = async ({
   avatarURL,
   verificationToken,
 }) => {
-  const hashedPassword = await bcryptjs.hash(password, 10);
+  const hashedPassword = await hashPassword(password);
 
   const user = new User({
     email,
@@ -66,21 +73,10 @@ export const logoutUser = async (userId) => {
   return "";
 };
 
-export const getCurrentUser = async (userId) => {
-  const user = await User.findById(userId);
-  return user;
-};
-
 export const updateUser = async (userId, newUserInfo) => {
   const updatedUser = await User.findByIdAndUpdate(userId, newUserInfo, {
     new: true,
   });
 
   return updatedUser;
-};
-
-export const verifyUser = async (verificationToken) => {
-  const user = await User.findOne({ verificationToken });
-
-  return user;
 };

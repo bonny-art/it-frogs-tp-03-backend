@@ -42,6 +42,10 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Verify token is required"],
     },
+    passwordRecoveryToken: {
+      type: String,
+      default: null,
+    },
   },
   {
     versionKey: false,

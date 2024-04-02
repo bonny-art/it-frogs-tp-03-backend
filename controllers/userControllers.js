@@ -32,7 +32,7 @@ export const uploadAvatar = async (req, res, next) => {
 
 export const getCurrentUser = async (req, res, next) => {
   try {
-    const currentUser = await usersServ.getCurrentUser(req.user.id);
+    const currentUser = await usersServ.getUserById(req.user.id);
     const { email, name, gender, dailyWaterGoal, avatarURL } = currentUser;
 
     res.send({ email, name, gender, dailyWaterGoal, avatarURL });

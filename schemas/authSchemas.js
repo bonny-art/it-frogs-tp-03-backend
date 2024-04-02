@@ -10,6 +10,10 @@ export const loginUserSchema = Joi.object({
   password: Joi.string().required(),
 });
 
-export const reVerificateUserSchema = Joi.object({
+export const sendEmailUserSchema = Joi.object({
   email: Joi.string().email().required(),
+});
+
+export const changePasswordUserSchema = Joi.object({
+  password: Joi.string().required(),
 });
