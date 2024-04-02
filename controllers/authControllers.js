@@ -271,7 +271,40 @@ export const logoutUser = async (req, res, next) => {
  * the error is caught and passed to the next middleware function for error handling.
  */
 
-export const sendPasswordRecoveryEmail = async (req, res, next) => {};
+export const sendPasswordRecoveryEmail = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const normalizedEmail = email.toLowerCase();
+
+    const user = await usersServ.getUserByProperty("email", normalizedEmail);
+
+    if (!user) {
+      throw HttpError(404, "Ther is no user with this email address");
+    }
+
+    const passwordRecoveryToken = crypto.randomUUID();
+
+    const newUser = await usersServ.updateUser(user._id, {
+      passwordRecoveryToken,
+    });
+
+    const htmlContent = makeLetterHTML.makePasswordRecoveryLetterHTML(
+      req,
+      newUser
+    );
+
+    const subject = "Reset Your Password for Tracker of Water Account";
+
+    sendMail(htmlContent, newUser, subject);
+
+    res.status(200).json({
+      message:
+        "Password reset instructions have been sent to your email. Please check your inbox.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 /**
  * Controller for recovering a user's password.
@@ -293,4 +326,31 @@ export const sendPasswordRecoveryEmail = async (req, res, next) => {};
  * the error is caught and passed to the next middleware function for error handling.
  */
 
-export const recoverPassword = async (req, res, next) => {};
+export const recoverPassword = async (req, res, next) => {
+  try {
+    const { passwordRecoveryToken } = req.params;
+    const { password } = req.body;
+
+    const user = await usersServ.getUserByProperty(
+      "passwordRecoveryToken",
+      passwordRecoveryToken
+    );
+
+    if (!user) {
+      throw HttpError(404, "User not found");
+    }
+
+    const hashedPassword = await usersServ.hashPassword(password);
+
+    await usersServ.updateUser(user._id, {
+      passwordRecoveryToken: null,
+      password: hashedPassword,
+    });
+
+    res.status(200).send({
+      message: "Password changed successfully.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
