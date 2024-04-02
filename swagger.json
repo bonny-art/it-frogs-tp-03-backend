@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.2",
+    "version": "1.0.3",
     "title": "Water Tracker",
     "description": "A web application that allows you to track daily water consumption"
   },
@@ -43,8 +43,6 @@
         "tags": ["API-Docs"],
         "summary": "API documentation (this document)",
 
-        "requestBody": {},
-
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -83,15 +81,24 @@
         "tags": ["Auth"],
         "summary": "Send e-mail for recovery user password",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
+          "description": "User email and password",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": ""
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "format": "email",
+                    "example": "user@example.com"
+                  }
+                }
               }
             }
           }
@@ -118,6 +125,7 @@
         "summary": "User registration",
 
         "requestBody": {
+          "description": "User email and password",
           "required": true,
           "content": {
             "application/json": {
@@ -173,6 +181,7 @@
         "parameters": [],
 
         "requestBody": {
+          "description": "User email",
           "required": true,
           "content": {
             "application/json": {
@@ -209,6 +218,7 @@
         "parameters": [],
 
         "requestBody": {
+          "description": "User email and password",
           "required": true,
           "content": {
             "application/json": {
@@ -275,7 +285,7 @@
       }
     },
 
-    "/auth/recover-password/": {
+    "/auth/recover-password": {
       "post": {
         "tags": ["Auth"],
         "summary": "Recovery user password",
@@ -284,11 +294,21 @@
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
+          "description": "User email",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": ""
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "format": "email",
+                    "example": "user@example.com"
+                  }
+                }
               }
             }
           }
@@ -317,8 +337,6 @@
         "parameters": [],
         "security": [{ "Bearer": [] }],
 
-        "requestBody": {},
-
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -331,12 +349,28 @@
     "/user/avatars": {
       "patch": {
         "tags": ["User"],
-        "summary": "Change user avatar",
+        "summary": "Upload user avatar",
 
         "parameters": [],
         "security": [{ "Bearer": [] }],
 
-        "requestBody": {},
+        "requestBody": {
+          "description": "User avatar file",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
 
         "responses": {
           "200": {
@@ -356,12 +390,13 @@
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
+          "description": "User profile data",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [],
+                "required": true,
                 "properties": {
                   "email": {
                     "type": "string",
@@ -372,12 +407,12 @@
                   "name": {
                     "type": "string",
                     "description": "User name",
-                    "example": "Adam"
+                    "example": "Olexandra"
                   },
-                  "password": {
+                  "gender": {
                     "type": "string",
-                    "description": "User password",
-                    "example": "pAsSwOrD!"
+                    "description": "User gender",
+                    "example": "woman"
                   }
                 }
               }
@@ -402,7 +437,25 @@
         "parameters": [],
         "security": [{ "Bearer": [] }],
 
-        "requestBody": {},
+        "requestBody": {
+          "description": "User daily water norma",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "dailyWaterGoal": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 2500
+                  }
+                }
+              }
+            }
+          }
+        },
 
         "responses": {
           "200": {
@@ -421,7 +474,34 @@
         "parameters": [],
         "security": [{ "Bearer": [] }],
 
-        "requestBody": {},
+        "requestBody": {
+          "description": "User water consumption data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "ml": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "User water consumption amount (ml)",
+                    "minimum": 0,
+                    "maximum": 5000,
+                    "example": 250
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "User water consumption date and time",
+                    "example": "2022-02-24T08:30:00Z"
+                  }
+                }
+              }
+            }
+          }
+        },
 
         "responses": {
           "200": {
@@ -440,7 +520,34 @@
         "parameters": [],
         "security": [{ "Bearer": [] }],
 
-        "requestBody": {},
+        "requestBody": {
+          "description": "User water consumption data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "ml": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "User water consumption amount (ml)",
+                    "minimum": 0,
+                    "maximum": 5000,
+                    "example": 250
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "User water consumption date and time",
+                    "example": "2022-02-24T08:30:00Z"
+                  }
+                }
+              }
+            }
+          }
+        },
 
         "responses": {
           "200": {
@@ -457,7 +564,26 @@
         "parameters": [],
         "security": [{ "Bearer": [] }],
 
-        "requestBody": {},
+        "requestBody": {
+          "description": "User data record date",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "User water consumption date and time",
+                    "example": "2022-02-24T08:30:00Z"
+                  }
+                }
+              }
+            }
+          }
+        },
 
         "responses": {
           "200": {
@@ -476,7 +602,26 @@
         "parameters": [],
         "security": [{ "Bearer": [] }],
 
-        "requestBody": {},
+        "requestBody": {
+          "description": "User data record date",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "User water consumption date and time",
+                    "example": "2022-02-24T08:30:00Z"
+                  }
+                }
+              }
+            }
+          }
+        },
 
         "responses": {
           "200": {
