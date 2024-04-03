@@ -25,6 +25,10 @@ export const sendMail = (htmlContent, user, subject) => {
       From: "svitlana.otenko@gmail.com",
       Subject: subject,
     },
+    Options: {
+      trackOpens: false,
+      trackClicks: false,
+    },
   };
   const campaign = {
     Name: "hello campaign",
