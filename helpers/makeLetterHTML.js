@@ -1,7 +1,7 @@
 import path from "path";
 
 export const makeEmailVerificationLetterHTML = (req, user) => {
-  const referer = req.get("Referer").toString();
+  const referer = req.get("Referer");
 
   const verificationPath = path.join(
     referer,
@@ -105,11 +105,11 @@ export const makeEmailVerificationLetterHTML = (req, user) => {
 </html>
 `;
 
-  return htmlContent;
+  return htmlContent.toString();
 };
 
 export const makePasswordRecoveryLetterHTML = (req, user) => {
-  const referer = req.get("Referer").toString();
+  const referer = req.get("Referer");
 
   const resetPasswordPath = path.join(
     referer,
@@ -192,5 +192,5 @@ export const makePasswordRecoveryLetterHTML = (req, user) => {
 </html>
 `;
 
-  return htmlContent;
+  return htmlContent.toString();
 };
