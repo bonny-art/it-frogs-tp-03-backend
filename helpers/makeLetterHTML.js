@@ -1,13 +1,14 @@
 import path from "path";
 
 export const makeEmailVerificationLetterHTML = (req, user) => {
-  const referer = req.headers.host;
-  console.log("🚀 ~ referer:", referer);
+  const referer = req.get("Referer");
 
-  const verificationPath =
-    req.protocol +
-    "://" +
-    path.join(referer, "email-verification", user.verificationToken);
+  const verificationPath = path.join(
+    referer,
+    "WaterTrackerFrontend",
+    "email-verification",
+    user.verificationToken
+  );
 
   const verificationPathBack =
     req.protocol +
@@ -109,16 +110,19 @@ export const makeEmailVerificationLetterHTML = (req, user) => {
 };
 
 export const makePasswordRecoveryLetterHTML = (req, user) => {
-  const resetPasswordPath =
+  const referer = req.get("Referer");
+
+  const resetPasswordPath = path.join(
+    referer,
+    "WaterTrackerFrontend",
+    "email-verification",
+    user.verificationToken
+  );
+
+  const resetPasswordPathBack =
     req.protocol +
     "://" +
-    path.join(
-      req.get("host"),
-      "api",
-      "auth",
-      "verify",
-      user.passwordRecoveryToken
-    );
+    path.join(req.get("host"), "api", "auth", "verify", user.verificationToken);
 
   const htmlContent = `
   <!DOCTYPE html>
@@ -178,6 +182,8 @@ export const makePasswordRecoveryLetterHTML = (req, user) => {
       <a href="${resetPasswordPath}" class="reset-button">Reset Password</a>
       <p>If the button above does not work, please copy and paste the following link into your browser:</p>
       <p><a href="${resetPasswordPath}">${resetPasswordPath}</a></p>
+      <h2>Лінка для підтверждення напряму на бек-енді (тимчасова)</h2>
+      <p><a href="${resetPasswordPathBack}">${resetPasswordPathBack}</a></p>
     </div>
     <div class="footer">
       <p>If you have any questions or need assistance, please don't hesitate to contact us.</p>
