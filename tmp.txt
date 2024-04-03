@@ -1,19 +1,22 @@
-post    "/auth/register"                        createUser              body: {email, password}
-get     "/auth/verify/:verificationToken"       verificateUser          
-post    "/auth/verify"                          reVerificateUser        body: {email}
-post    "/auth/login"                           loginUser               body: {email, password}
-post    "/auth/logout"                          logoutUser              
+post    "/auth/register"                                    createUser              body: {email, password}
+get     "/auth/verify/:verificationToken"                   verificateUser          
+post    "/auth/verify"                                      reVerificateUser        body: {email}
+post    "/auth/login"                                       loginUser               body: {email, password}
+post    "/auth/logout"                                      logoutUser      
 
-patch   "/user/avatars"                         uploadAvatar            body: {file}
-get     "/user/current"                         getCurrentUser          
-patch   "/user"                                 updateUser              body: {email, name, gender}
+get     "/auth/recover-password/:passwordRecoveryToken"     recovery user password
+get     "/auth/recover-password                             recovery user password  body: {email}  
 
-patch   "/waterrate"                            updateWaterRate         body: {date, dailyWaterGoal}
+patch   "/user/avatars"                                     uploadAvatar            body: {file}
+get     "/user/current"                                     getCurrentUser          
+patch   "/user"                                             updateUser              body: {email, name, gender}
 
-post    "/water"                                createWaterRecord       body: {date, ml}
-put     "/water/:waterRecordId"                 updateWaterRecord       body: {date, ml}
-delete  "/water/:waterRecordId"                 deleteWaterRecord       
+patch   "/waterrate"                                        updateWaterRate         body: {date, dailyWaterGoal}
 
-get     "/today"                                getTodayWaterRecord     params: date
+post    "/water"                                            createWaterRecord       body: {date, ml}
+put     "/water/:waterRecordId"                             updateWaterRecord       body: {date, ml}
+delete  "/water/:waterRecordId"                             deleteWaterRecord       
 
-get     "/month"                                getMonthWaterRecords    params: startDate, endDate
+get     "/today"                                            getTodayWaterRecord     params: date
+
+get     "/month"                                            getMonthWaterRecords    params: startDate, endDate
