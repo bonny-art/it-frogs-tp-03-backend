@@ -33,7 +33,7 @@ export const createUser = async (req, res, next) => {
     const { email } = req.body;
     const normalizedEmail = email.toLowerCase();
     const name = normalizedEmail.split("@")[0];
-    const user = await usersServ.getUserByProperty("email", normalizedEmail);
+    const user = await usersServ.getUserByProperty({ email: normalizedEmail });
     if (user) {
       throw HttpError(409, "Email in use");
     }
@@ -88,11 +88,9 @@ export const createUser = async (req, res, next) => {
 
 export const verificateUser = async (req, res, next) => {
   const { verificationToken } = req.params;
+
   try {
-    const user = await usersServ.getUserByProperty(
-      "verificationToken",
-      verificationToken
-    );
+    const user = await usersServ.getUserByProperty({ verificationToken });
 
     if (!user) {
       throw HttpError(404, "User not found");
@@ -138,7 +136,7 @@ export const reVerificateUser = async (req, res, next) => {
       throw HttpError(400, "Missing required field email");
     }
 
-    const user = await usersServ.getUserByProperty("email", email);
+    const user = await usersServ.getUserByProperty({ email });
 
     if (!user) {
       throw HttpError(404, "User not found");
@@ -155,7 +153,7 @@ export const reVerificateUser = async (req, res, next) => {
 
     const subject = "Confirm the registration on Tracker of water";
 
-    sendMail(htmlContent, newUser, subject);
+    sendMail(htmlContent, user, subject);
 
     res.send({
       message: "Verification email sent",
@@ -190,7 +188,7 @@ export const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
     const normalizedEmail = email.toLowerCase();
 
-    const user = await usersServ.getUserByProperty("email", normalizedEmail);
+    const user = await usersServ.getUserByProperty({ email: normalizedEmail });
 
     if (!user) {
       throw HttpError(401, "Email or password is wrong");
@@ -218,6 +216,7 @@ export const loginUser = async (req, res, next) => {
         name: loggedInUser.name,
         dailyWaterGoal: loggedInUser.dailyWaterGoal,
         avatarURL: loggedInUser.avatarURL,
+        gender: loggedInUser.gender,
       },
     });
   } catch (error) {
@@ -276,7 +275,7 @@ export const sendPasswordRecoveryEmail = async (req, res, next) => {
     const { email } = req.body;
     const normalizedEmail = email.toLowerCase();
 
-    const user = await usersServ.getUserByProperty("email", normalizedEmail);
+    const user = await usersServ.getUserByProperty({ email: normalizedEmail });
 
     if (!user) {
       throw HttpError(404, "Ther is no user with this email address");
@@ -331,10 +330,7 @@ export const recoverPassword = async (req, res, next) => {
     const { passwordRecoveryToken } = req.params;
     const { password } = req.body;
 
-    const user = await usersServ.getUserByProperty(
-      "passwordRecoveryToken",
-      passwordRecoveryToken
-    );
+    const user = await usersServ.getUserByProperty({ passwordRecoveryToken });
 
     if (!user) {
       throw HttpError(404, "User not found");

@@ -23,12 +23,11 @@ const waterRecordSchema = new Schema(
     consumedTimes: {
       type: Number,
       default: 0,
-      min: [0, "Percentage of water cannot be negative"],
+      min: [0, "Number of water intakes cannot be negative"],
     },
     consumedWaterPercentage: {
       type: Number,
       default: 0,
-      min: [0, "Number of water intakes cannot be negative"],
     },
     waterIntakes: [
       {
