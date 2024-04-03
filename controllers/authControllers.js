@@ -88,6 +88,7 @@ export const createUser = async (req, res, next) => {
 
 export const verificateUser = async (req, res, next) => {
   const { verificationToken } = req.params;
+
   try {
     const user = await usersServ.getUserByProperty({ verificationToken });
 
