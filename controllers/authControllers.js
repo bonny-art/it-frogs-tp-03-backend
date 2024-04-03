@@ -153,7 +153,7 @@ export const reVerificateUser = async (req, res, next) => {
 
     const subject = "Confirm the registration on Tracker of water";
 
-    sendMail(htmlContent, newUser, subject);
+    sendMail(htmlContent, user, subject);
 
     res.send({
       message: "Verification email sent",

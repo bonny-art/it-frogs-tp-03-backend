@@ -1,7 +1,15 @@
 import path from "path";
 
 export const makeEmailVerificationLetterHTML = (req, user) => {
+  const referer = req.headers.host;
+  console.log("🚀 ~ referer:", referer);
+
   const verificationPath =
+    req.protocol +
+    "://" +
+    path.join(referer, "email-verification", user.verificationToken);
+
+  const verificationPathBack =
     req.protocol +
     "://" +
     path.join(req.get("host"), "api", "auth", "verify", user.verificationToken);
@@ -70,6 +78,8 @@ export const makeEmailVerificationLetterHTML = (req, user) => {
       <a href="${verificationPath}" class="confirm-button">Confirm Email</a>
       <p>If the button above does not work, please copy the following link and paste it into your browser's address bar to proceed:</p>
       <p><a href="${verificationPath}">${verificationPath}</a></p>
+      <h2>Лінка для підтверждення напряму на бек-енді (тимчасова)</h2>
+      <p><a href="${verificationPathBack}">${verificationPathBack}</a></p>
       <h2>Why Stay Hydrated?</h2>
       <ul>
         <li>Supply of nutrients to all organs</li>
