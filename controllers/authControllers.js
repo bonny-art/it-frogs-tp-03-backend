@@ -146,14 +146,14 @@ export const reVerificateUser = async (req, res, next) => {
       throw HttpError(400, "Verification has already been passed");
     }
 
-    const htmlContent = makeLetterHTML.makeEmailVerificationLetterHTML(
+    const subject = "Confirm the registration on Tracker of water";
+    const letter = makeLetterHTML.makeEmailVerificationLetterHTML(
       req,
-      user
+      user,
+      subject
     );
 
-    const subject = "Confirm the registration on Tracker of water";
-
-    sendMail(htmlContent, user, subject);
+    sendMail(letter);
 
     res.send({
       message: "Verification email sent",
