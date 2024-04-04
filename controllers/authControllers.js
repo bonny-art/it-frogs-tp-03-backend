@@ -50,14 +50,14 @@ export const createUser = async (req, res, next) => {
       verificationToken,
     });
 
-    const htmlContent = makeLetterHTML.makeEmailVerificationLetterHTML(
+    const subject = "Confirm the registration on Tracker of water";
+    const letter = makeLetterHTML.makeEmailVerificationLetterHTML(
       req,
-      newUser
+      newUser,
+      subject
     );
 
-    const subject = "Confirm the registration on Tracker of water";
-
-    sendMail(htmlContent, newUser, subject);
+    sendMail(letter);
 
     res.status(201).send({
       user: {
@@ -146,14 +146,14 @@ export const reVerificateUser = async (req, res, next) => {
       throw HttpError(400, "Verification has already been passed");
     }
 
-    const htmlContent = makeLetterHTML.makeEmailVerificationLetterHTML(
+    const subject = "Confirm the registration on Tracker of water";
+    const letter = makeLetterHTML.makeEmailVerificationLetterHTML(
       req,
-      user
+      user,
+      subject
     );
 
-    const subject = "Confirm the registration on Tracker of water";
-
-    sendMail(htmlContent, user, subject);
+    sendMail(letter);
 
     res.send({
       message: "Verification email sent",
@@ -287,16 +287,16 @@ export const sendPasswordRecoveryEmail = async (req, res, next) => {
       passwordRecoveryToken,
     });
 
-    const htmlContent = makeLetterHTML.makePasswordRecoveryLetterHTML(
+    const subject = "Your Account Password Reset Request";
+    const letter = makeLetterHTML.makePasswordRecoveryLetterHTML(
       req,
-      newUser
+      newUser,
+      subject
     );
 
-    const subject = "Reset Your Password for Tracker of Water Account";
+    sendMail(letter);
 
-    sendMail(htmlContent, newUser, subject);
-
-    res.status(200).json({
+    res.json({
       message:
         "Password reset instructions have been sent to your email. Please check your inbox.",
     });

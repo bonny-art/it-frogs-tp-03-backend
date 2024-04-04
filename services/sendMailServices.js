@@ -1,55 +1,22 @@
-import ElasticEmail from "@elasticemail/elasticemail-client";
+import nodemailer from "nodemailer";
 
-const { ELASTICEMAIL_API_KEY } = process.env;
+const { META_PASSWORD, META_EMAIL } = process.env;
 
-const client = ElasticEmail.ApiClient.instance;
+const nodemailerConfig = {
+  host: "smtp.meta.ua",
+  port: 465,
+  secure: true,
+  auth: {
+    user: META_EMAIL,
+    pass: META_PASSWORD,
+  },
+  tls: { rejectUnauthorized: false },
+};
 
-const apikey = client.authentications["apikey"];
-apikey.apiKey = ELASTICEMAIL_API_KEY;
+const transporter = nodemailer.createTransport(nodemailerConfig);
 
-const emailsApi = new ElasticEmail.EmailsApi();
-
-export const sendMail = (htmlContent, user, subject) => {
-  const emailData = {
-    Recipients: {
-      To: [user.email],
-    },
-    Content: {
-      Body: [
-        {
-          ContentType: "HTML",
-          Charset: "utf-8",
-          Content: htmlContent,
-        },
-      ],
-      From: "svitlana.otenko@gmail.com",
-      Subject: subject,
-    },
-  };
-  const campaign = {
-    Name: "hello campaign",
-    Recipients: {
-      ListNames: ["Svitlana"],
-      SegmentNames: null,
-    },
-    Content: [
-      {
-        From: "svitlana.otenko@gmail.com",
-        ReplyTo: "svitlana.otenko@gmail.com",
-        TemplateName: "hello_template",
-        Subject: "Hello",
-      },
-    ],
-    Status: "Draft",
-  };
-
-  const callback = (error, data, response) => {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log("Email sent.");
-    }
-  };
-
-  emailsApi.emailsTransactionalPost(emailData, callback);
+export const sendMail = async (data) => {
+  const email = { ...data, from: META_EMAIL };
+  await transporter.sendMail(email);
+  return true;
 };

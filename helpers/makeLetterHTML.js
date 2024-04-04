@@ -1,19 +1,14 @@
 import path from "path";
 
-export const makeEmailVerificationLetterHTML = (req, user) => {
+export const makeEmailVerificationLetterHTML = (req, user, subject) => {
   const referer = req.get("Referer");
 
-  const verificationPath = path.join(
-    referer,
-    "WaterTrackerFrontend",
-    "email-verification",
-    user.verificationToken
-  );
+  const verificationPath = `${referer}WaterTrackerFrontend/email-verification/${user.verificationToken}`;
 
-  const verificationPathBack =
-    req.protocol +
-    "://" +
-    path.join(req.get("host"), "api", "auth", "verify", user.verificationToken);
+  const verificationPathBack = `
+    ${req.protocol}://${req.get("host")}/api/auth/verify/${
+    user.verificationToken
+  }`;
 
   const htmlContent = `
   <!DOCTYPE html>
@@ -45,7 +40,7 @@ export const makeEmailVerificationLetterHTML = (req, user) => {
     text-align: center;
   }
   .footer {
-    background-color: #202020;
+    background-color: #00bfff;
     color: #ffffff;
     padding: 10px;
     text-align: center;
@@ -61,7 +56,7 @@ export const makeEmailVerificationLetterHTML = (req, user) => {
     display: inline-block;
     padding: 10px 20px;
     margin-top: 20px;
-    background-color: #007bff; /* Standard blue color for buttons */
+    background-color: #00bfff;
     color: #ffffff;
     text-decoration: none;
     border-radius: 5px;
@@ -106,23 +101,24 @@ export const makeEmailVerificationLetterHTML = (req, user) => {
 </html>
 `;
 
-  return htmlContent;
+  const letter = {
+    to: user.email,
+    subject: subject,
+    html: htmlContent,
+  };
+
+  return letter;
 };
 
-export const makePasswordRecoveryLetterHTML = (req, user) => {
+export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
   const referer = req.get("Referer");
 
-  const resetPasswordPath = path.join(
-    referer,
-    "WaterTrackerFrontend",
-    "email-verification",
-    user.verificationToken
-  );
+  const resetPasswordPath = `${referer}WaterTrackerFrontend/password-recovery/${user.passwordRecoveryToken}`;
 
-  const resetPasswordPathBack =
-    req.protocol +
-    "://" +
-    path.join(req.get("host"), "api", "auth", "verify", user.verificationToken);
+  const resetPasswordPathBack = `
+    ${req.protocol}://${req.get("host")}/api/auth/verify/${
+    user.passwordRecoveryToken
+  }`;
 
   const htmlContent = `
   <!DOCTYPE html>
@@ -154,16 +150,23 @@ export const makePasswordRecoveryLetterHTML = (req, user) => {
     text-align: center;
   }
   .footer {
-    background-color: #202020;
+    background-color: #00bfff;
     color: #ffffff;
     padding: 10px;
     text-align: center;
   }
-  .reset-button {
+  ul {
+    list-style-type: none; /* Removes bullets */
+    padding: 0;
+  }
+  li {
+    margin-bottom: 5px;
+  }
+  .confirm-button {
     display: inline-block;
     padding: 10px 20px;
     margin-top: 20px;
-    background-color: #007bff; /* Standard blue color for buttons */
+    background-color: #00bfff;
     color: #ffffff;
     text-decoration: none;
     border-radius: 5px;
@@ -193,5 +196,11 @@ export const makePasswordRecoveryLetterHTML = (req, user) => {
 </html>
 `;
 
-  return htmlContent;
+  const letter = {
+    to: user.email,
+    subject: subject,
+    html: htmlContent,
+  };
+
+  return letter;
 };

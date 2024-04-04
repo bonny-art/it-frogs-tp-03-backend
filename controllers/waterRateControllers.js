@@ -27,7 +27,18 @@ export const updateWaterRate = async (req, res, next) => {
       dailyWaterGoal,
     });
 
-    res.send({ user, newDailyWater });
+    const { email, name, gender, avatarURL } = user;
+
+    res.send({
+      user: {
+        email,
+        name,
+        gender,
+        dailyWaterGoal: user.dailyWaterGoal,
+        avatarURL,
+      },
+      newDailyWater,
+    });
   } catch (error) {
     next(error);
   }
