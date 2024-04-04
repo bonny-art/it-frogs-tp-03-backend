@@ -3,7 +3,7 @@ import path from "path";
 export const makeEmailVerificationLetterHTML = (req, user, subject) => {
   const referer = req.get("Referer");
 
-  const verificationPath = `${referer}WaterTrackerFrontend/email-verification/${user.verificationToken}`;
+  const verificationPath = `${referer}WaterTrackerFrontend/verification/${user.verificationToken}`;
 
   const verificationPathBack = `
     ${req.protocol}://${req.get("host")}/api/auth/verify/${
@@ -113,7 +113,7 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
 export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
   const referer = req.get("Referer");
 
-  const resetPasswordPath = `${referer}WaterTrackerFrontend/password-recovery/${user.passwordRecoveryToken}`;
+  const resetPasswordPath = `${referer}WaterTrackerFrontend/recovery/${user.passwordRecoveryToken}`;
 
   const resetPasswordPathBack = `
     ${req.protocol}://${req.get("host")}/api/auth/verify/${
