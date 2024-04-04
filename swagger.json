@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.5",
+    "version": "1.0.6",
     "title": "Water Tracker",
     "description": "A web application that allows you to track daily water consumption"
   },
@@ -47,93 +47,6 @@
           "200": {
             "description": "Successful operation",
             "content": {}
-          },
-          "404": {
-            "description": "Resource not found"
-          }
-        }
-      }
-    },
-
-    "/auth/verify/{verificationToken}": {
-      "get": {
-        "tags": ["Auth"],
-        "summary": "User e-mail verification",
-
-        "parameters": [
-          {
-            "name": "verificationToken",
-            "in": "path",
-            "type": "string",
-            "description": "Verification token from e-mail ",
-            "required": true
-          }
-        ],
-
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Resource not found"
-          }
-        }
-      }
-    },
-
-    "/auth/recover-password/{passwordRecoveryToken}": {
-      "get": {
-        "tags": ["Auth"],
-        "summary": "Send e-mail for recovery user password",
-
-        "parameters": [
-          {
-            "name": "passwordRecoveryToken",
-            "in": "path",
-            "type": "string",
-            "description": "Verification token from e-mail ",
-            "required": true
-          }
-        ],
-
-        "security": [{ "Bearer": [] }],
-
-        "requestBody": {
-          "description": "User email and password",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["email"],
-                "properties": {
-                  "password": {
-                    "type": "string",
-                    "description": "User password",
-                    "example": "watertracker.user_123"
-                  }
-                }
-              }
-            }
-          }
-        },
-
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "404": {
             "description": "Resource not found"
@@ -213,7 +126,7 @@
     "/auth/verify": {
       "post": {
         "tags": ["Auth"],
-        "summary": "User re-verification",
+        "summary": "Send email for verification again",
 
         "parameters": [],
 
@@ -417,7 +330,7 @@
     "/auth/recover-password": {
       "post": {
         "tags": ["Auth"],
-        "summary": "Recovery user password",
+        "summary": "Send e-mail for recovery user password",
 
         "parameters": [],
         "security": [{ "Bearer": [] }],
@@ -436,6 +349,93 @@
                     "description": "User email",
                     "format": "email",
                     "example": "watertracker.user@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+
+    "/auth/verify/{verificationToken}": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Token from e-mail for e-mail verification",
+
+        "parameters": [
+          {
+            "name": "verificationToken",
+            "in": "path",
+            "type": "string",
+            "description": "Verification token from e-mail ",
+            "required": true
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+
+    "/auth/recover-password/{passwordRecoveryToken}": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Token from e-mail for recovery user password",
+
+        "parameters": [
+          {
+            "name": "passwordRecoveryToken",
+            "in": "path",
+            "type": "string",
+            "description": "Verification token from e-mail ",
+            "required": true
+          }
+        ],
+
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "description": "User email and password",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "watertracker.user_123"
                   }
                 }
               }
@@ -681,6 +681,49 @@
                           "type": "string",
                           "description": "User gender",
                           "example": "female"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete user profile and data",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
                         }
                       }
                     }
