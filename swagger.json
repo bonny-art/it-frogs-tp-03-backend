@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.4",
+    "version": "1.0.5",
     "title": "Water Tracker",
     "description": "A web application that allows you to track daily water consumption"
   },
@@ -47,6 +47,9 @@
           "200": {
             "description": "Successful operation",
             "content": {}
+          },
+          "404": {
+            "description": "Resource not found"
           }
         }
       }
@@ -292,26 +295,43 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "name": {
+                    "token": {
                       "type": "string",
-                      "description": "User name",
-                      "example": "User"
+                      "description": "JWT string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MGU2ODE2MDc1ZGE5YWRhYmQ5YjRiMiIsImlhdCI6MTcxMjIyMjg2NiwiZXhwIjoxNzEyODI3NjY2fQ.6MbsBIgWPXbpqnXQB3FzlYsnTBGyEOZJo8HFkcIdzNo"
                     },
-                    "email": {
-                      "type": "string",
-                      "description": "User email",
-                      "format": "email",
-                      "example": "watertracker.user@gmail.com"
-                    },
-                    "avatarURL": {
-                      "type": "string",
-                      "description": "User avatar",
-                      "example": "http://..."
-                    },
-                    "gender": {
-                      "type": "string",
-                      "description": "User gender",
-                      "example": "female"
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "format": "email",
+                          "example": "watertracker.user@gmail.com"
+                        },
+                        "avatarURL": {
+                          "type": "string",
+                          "description": "User avatar",
+                          "example": "http://www.gravatar.com/avatar/..."
+                        },
+                        "gender": {
+                          "type": "string",
+                          "description": "User gender",
+                          "example": "female"
+                        },
+                        "dailyWaterGoal": {
+                          "type": "integer",
+                          "format": "int32",
+                          "description": "Daily water norma",
+                          "example": 2000
+                        }
+                      }
                     }
                   }
                 }
@@ -347,26 +367,32 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "name": {
-                      "type": "string",
-                      "description": "User name",
-                      "example": "User"
-                    },
-                    "email": {
-                      "type": "string",
-                      "description": "User email",
-                      "format": "email",
-                      "example": "watertracker.user@gmail.com"
-                    },
-                    "avatarURL": {
-                      "type": "string",
-                      "description": "User avatar",
-                      "example": "http://..."
-                    },
-                    "gender": {
-                      "type": "string",
-                      "description": "User gender",
-                      "example": "female"
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "format": "email",
+                          "example": "watertracker.user@gmail.com"
+                        },
+                        "avatarURL": {
+                          "type": "string",
+                          "description": "User avatar",
+                          "example": "http://..."
+                        },
+                        "gender": {
+                          "type": "string",
+                          "description": "User gender",
+                          "example": "female"
+                        }
+                      }
                     }
                   }
                 }
@@ -453,31 +479,37 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "_id": {
-                      "type": "string",
-                      "description": "User id",
-                      "example": "User"
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "User name",
-                      "example": "User"
-                    },
-                    "email": {
-                      "type": "string",
-                      "description": "User email",
-                      "format": "email",
-                      "example": "watertracker.user@gmail.com"
-                    },
-                    "avatarURL": {
-                      "type": "string",
-                      "description": "User avatar",
-                      "example": "http://..."
-                    },
-                    "gender": {
-                      "type": "string",
-                      "description": "User gender",
-                      "example": "female"
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "User id",
+                          "example": "1111-2222..."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "format": "email",
+                          "example": "watertracker.user@gmail.com"
+                        },
+                        "avatarURL": {
+                          "type": "string",
+                          "description": "User avatar",
+                          "example": "http://..."
+                        },
+                        "gender": {
+                          "type": "string",
+                          "description": "User gender",
+                          "example": "female"
+                        }
+                      }
                     }
                   }
                 }
@@ -531,26 +563,32 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "name": {
-                      "type": "string",
-                      "description": "User name",
-                      "example": "User"
-                    },
-                    "email": {
-                      "type": "string",
-                      "description": "User email",
-                      "format": "email",
-                      "example": "watertracker.user@gmail.com"
-                    },
-                    "avatarURL": {
-                      "type": "string",
-                      "description": "User avatar",
-                      "example": "http://..."
-                    },
-                    "gender": {
-                      "type": "string",
-                      "description": "User gender",
-                      "example": "female"
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "format": "email",
+                          "example": "watertracker.user@gmail.com"
+                        },
+                        "avatarURL": {
+                          "type": "string",
+                          "description": "User avatar",
+                          "example": "http://..."
+                        },
+                        "gender": {
+                          "type": "string",
+                          "description": "User gender",
+                          "example": "female"
+                        }
+                      }
                     }
                   }
                 }
@@ -617,31 +655,37 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "_id": {
-                      "type": "string",
-                      "description": "User id",
-                      "example": "User"
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "User name",
-                      "example": "User"
-                    },
-                    "email": {
-                      "type": "string",
-                      "description": "User email",
-                      "format": "email",
-                      "example": "watertracker.user@gmail.com"
-                    },
-                    "avatarURL": {
-                      "type": "string",
-                      "description": "User avatar",
-                      "example": "http://..."
-                    },
-                    "gender": {
-                      "type": "string",
-                      "description": "User gender",
-                      "example": "female"
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "User id",
+                          "example": "User"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "format": "email",
+                          "example": "watertracker.user@gmail.com"
+                        },
+                        "avatarURL": {
+                          "type": "string",
+                          "description": "User avatar",
+                          "example": "http://..."
+                        },
+                        "gender": {
+                          "type": "string",
+                          "description": "User gender",
+                          "example": "female"
+                        }
+                      }
                     }
                   }
                 }
