@@ -110,7 +110,7 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
   return letter;
 };
 
-export const makePasswordRecoveryLetterHTML = (req, user) => {
+export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
   const referer = req.get("Referer");
 
   const resetPasswordPath = `${referer}WaterTrackerFrontend/password-recovery/${user.passwordRecoveryToken}`;
