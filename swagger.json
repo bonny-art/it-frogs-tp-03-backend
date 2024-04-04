@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.4",
+    "version": "1.0.6",
     "title": "Water Tracker",
     "description": "A web application that allows you to track daily water consumption"
   },
@@ -47,88 +47,6 @@
           "200": {
             "description": "Successful operation",
             "content": {}
-          }
-        }
-      }
-    },
-
-    "/auth/verify/{verificationToken}": {
-      "get": {
-        "tags": ["Auth"],
-        "summary": "User e-mail verification",
-
-        "parameters": [
-          {
-            "name": "verificationToken",
-            "in": "path",
-            "type": "string",
-            "description": "Verification token from e-mail ",
-            "required": true
-          }
-        ],
-
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {}
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Resource not found"
-          }
-        }
-      }
-    },
-
-    "/auth/recover-password/{passwordRecoveryToken}": {
-      "get": {
-        "tags": ["Auth"],
-        "summary": "Send e-mail for recovery user password",
-
-        "security": [{ "Bearer": [] }],
-
-        "requestBody": {
-          "description": "User email and password",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["email"],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "User email",
-                    "format": "email",
-                    "example": "watertracker.user@google.com"
-                  }
-                }
-              }
-            }
-          }
-        },
-
-        "responses": {
-          "201": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": ""
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "404": {
             "description": "Resource not found"
@@ -208,7 +126,7 @@
     "/auth/verify": {
       "post": {
         "tags": ["Auth"],
-        "summary": "User re-verification",
+        "summary": "Send email for verification again",
 
         "parameters": [],
 
@@ -225,7 +143,7 @@
                     "type": "string",
                     "description": "User email",
                     "format": "email",
-                    "example": "watertracker.user@google.com"
+                    "example": "watertracker.user@gmail.com"
                   }
                 }
               }
@@ -292,26 +210,43 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "name": {
+                    "token": {
                       "type": "string",
-                      "description": "User name",
-                      "example": "User"
+                      "description": "JWT string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MGU2ODE2MDc1ZGE5YWRhYmQ5YjRiMiIsImlhdCI6MTcxMjIyMjg2NiwiZXhwIjoxNzEyODI3NjY2fQ.6MbsBIgWPXbpqnXQB3FzlYsnTBGyEOZJo8HFkcIdzNo"
                     },
-                    "email": {
-                      "type": "string",
-                      "description": "User email",
-                      "format": "email",
-                      "example": "watertracker.user@gmail.com"
-                    },
-                    "avatarURL": {
-                      "type": "string",
-                      "description": "User avatar",
-                      "example": "http://..."
-                    },
-                    "gender": {
-                      "type": "string",
-                      "description": "User gender",
-                      "example": "female"
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "format": "email",
+                          "example": "watertracker.user@gmail.com"
+                        },
+                        "avatarURL": {
+                          "type": "string",
+                          "description": "User avatar",
+                          "example": "http://www.gravatar.com/avatar/..."
+                        },
+                        "gender": {
+                          "type": "string",
+                          "description": "User gender",
+                          "example": "female"
+                        },
+                        "dailyWaterGoal": {
+                          "type": "integer",
+                          "format": "int32",
+                          "description": "Daily water norma",
+                          "example": 2000
+                        }
+                      }
                     }
                   }
                 }
@@ -347,26 +282,32 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "name": {
-                      "type": "string",
-                      "description": "User name",
-                      "example": "User"
-                    },
-                    "email": {
-                      "type": "string",
-                      "description": "User email",
-                      "format": "email",
-                      "example": "watertracker.user@gmail.com"
-                    },
-                    "avatarURL": {
-                      "type": "string",
-                      "description": "User avatar",
-                      "example": "http://..."
-                    },
-                    "gender": {
-                      "type": "string",
-                      "description": "User gender",
-                      "example": "female"
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "format": "email",
+                          "example": "watertracker.user@gmail.com"
+                        },
+                        "avatarURL": {
+                          "type": "string",
+                          "description": "User avatar",
+                          "example": "http://www.gravatar.com/avatar/..."
+                        },
+                        "gender": {
+                          "type": "string",
+                          "description": "User gender",
+                          "example": "female"
+                        }
+                      }
                     }
                   }
                 }
@@ -389,7 +330,7 @@
     "/auth/recover-password": {
       "post": {
         "tags": ["Auth"],
-        "summary": "Recovery user password",
+        "summary": "Send e-mail for recovery user password",
 
         "parameters": [],
         "security": [{ "Bearer": [] }],
@@ -407,7 +348,7 @@
                     "type": "string",
                     "description": "User email",
                     "format": "email",
-                    "example": "watertracker.user@google.com"
+                    "example": "watertracker.user@gmail.com"
                   }
                 }
               }
@@ -416,13 +357,95 @@
         },
 
         "responses": {
-          "201": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+
+    "/auth/verify/{verificationToken}": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Token from e-mail for e-mail verification",
+
+        "parameters": [
+          {
+            "name": "verificationToken",
+            "in": "path",
+            "type": "string",
+            "description": "Verification token from e-mail ",
+            "required": true
+          }
+        ],
+
+        "responses": {
+          "200": {
             "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {}
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+
+    "/auth/recover-password/{passwordRecoveryToken}": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Token from e-mail for recovery user password",
+
+        "parameters": [
+          {
+            "name": "passwordRecoveryToken",
+            "in": "path",
+            "type": "string",
+            "description": "Verification token from e-mail ",
+            "required": true
+          }
+        ],
+
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "description": "User email and password",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "watertracker.user_123"
+                  }
+                }
               }
             }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Successful operation"
           },
           "400": {
             "description": "Bad request"
@@ -453,31 +476,37 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "_id": {
-                      "type": "string",
-                      "description": "User id",
-                      "example": "User"
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "User name",
-                      "example": "User"
-                    },
-                    "email": {
-                      "type": "string",
-                      "description": "User email",
-                      "format": "email",
-                      "example": "watertracker.user@gmail.com"
-                    },
-                    "avatarURL": {
-                      "type": "string",
-                      "description": "User avatar",
-                      "example": "http://..."
-                    },
-                    "gender": {
-                      "type": "string",
-                      "description": "User gender",
-                      "example": "female"
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "User id",
+                          "example": "1111-2222..."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "format": "email",
+                          "example": "watertracker.user@gmail.com"
+                        },
+                        "avatarURL": {
+                          "type": "string",
+                          "description": "User avatar",
+                          "example": "http://www.gravatar.com/avatar/..."
+                        },
+                        "gender": {
+                          "type": "string",
+                          "description": "User gender",
+                          "example": "female"
+                        }
+                      }
                     }
                   }
                 }
@@ -531,26 +560,32 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "name": {
-                      "type": "string",
-                      "description": "User name",
-                      "example": "User"
-                    },
-                    "email": {
-                      "type": "string",
-                      "description": "User email",
-                      "format": "email",
-                      "example": "watertracker.user@gmail.com"
-                    },
-                    "avatarURL": {
-                      "type": "string",
-                      "description": "User avatar",
-                      "example": "http://..."
-                    },
-                    "gender": {
-                      "type": "string",
-                      "description": "User gender",
-                      "example": "female"
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "format": "email",
+                          "example": "watertracker.user@gmail.com"
+                        },
+                        "avatarURL": {
+                          "type": "string",
+                          "description": "User avatar",
+                          "example": "http://..."
+                        },
+                        "gender": {
+                          "type": "string",
+                          "description": "User gender",
+                          "example": "female"
+                        }
+                      }
                     }
                   }
                 }
@@ -617,31 +652,80 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "_id": {
-                      "type": "string",
-                      "description": "User id",
-                      "example": "User"
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "User name",
-                      "example": "User"
-                    },
-                    "email": {
-                      "type": "string",
-                      "description": "User email",
-                      "format": "email",
-                      "example": "watertracker.user@gmail.com"
-                    },
-                    "avatarURL": {
-                      "type": "string",
-                      "description": "User avatar",
-                      "example": "http://..."
-                    },
-                    "gender": {
-                      "type": "string",
-                      "description": "User gender",
-                      "example": "female"
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "User id",
+                          "example": "User"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "User email",
+                          "format": "email",
+                          "example": "watertracker.user@gmail.com"
+                        },
+                        "avatarURL": {
+                          "type": "string",
+                          "description": "User avatar",
+                          "example": "http://..."
+                        },
+                        "gender": {
+                          "type": "string",
+                          "description": "User gender",
+                          "example": "female"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete user profile and data",
+
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "User name",
+                          "example": "User"
+                        }
+                      }
                     }
                   }
                 }
