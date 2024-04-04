@@ -1,11 +1,22 @@
 import fs from "fs/promises";
 import path from "path";
+
+import { v2 as cloudinary } from "cloudinary";
+
 import gravatar from "gravatar";
 import crypto from "node:crypto";
 
 import HttpError from "../helpers/HttpError.js";
 import * as usersServ from "../services/userServices.js";
-import { resizeImage } from "../services/imageServices.js";
+// import { resizeImage } from "../services/imageServices.js";
+
+const { CLOUD_NAME, API_KEY, API_SECRET } = process.env;
+
+cloudinary.config({
+  cloud_name: CLOUD_NAME,
+  api_key: API_KEY,
+  api_secret: API_SECRET,
+});
 
 export const uploadAvatar = async (req, res, next) => {
   try {
@@ -13,17 +24,30 @@ export const uploadAvatar = async (req, res, next) => {
       throw HttpError(400, "Select an avatar file to upload");
     }
 
-    await resizeImage(req.file.path, 80, 80);
+    // await resizeImage(req.file.path, 80, 80);
 
-    fs.rename(
-      req.file.path,
-      path.join(process.cwd(), "public", "avatars", req.file.filename)
-    );
+    // fs.rename(
+    //   req.file.path,
+    //   path.join(process.cwd(), "public", "avatars", req.file.filename)
+    // );
 
-    const avatarURL = path.join("avatars", req.file.filename);
+    // const avatarURL = path.join("avatars", req.file.filename);
+
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      transformation: [
+        { width: 80, height: 80, crop: "fill", gravity: "auto", radius: "max" },
+      ],
+      format: "png",
+    });
+
+    const avatarURL = result.url;
+
+    fs.unlink(req.file.path);
+
     await usersServ.updateUser(req.user.id, {
       avatarURL,
     });
+
     res.send({ avatarURL });
   } catch (error) {
     next(error);
