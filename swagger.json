@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.6",
+    "version": "1.0.7",
     "title": "Water Tracker",
     "description": "A web application that allows you to track daily water consumption"
   },
@@ -327,7 +327,7 @@
       }
     },
 
-    "/auth/recover-password": {
+    "/auth/recover": {
       "post": {
         "tags": ["Auth"],
         "summary": "Send e-mail for recovery user password",
@@ -406,7 +406,7 @@
       }
     },
 
-    "/auth/recover-password/{passwordRecoveryToken}": {
+    "/auth/recover/{passwordRecoveryToken}": {
       "patch": {
         "tags": ["Auth"],
         "summary": "Token from e-mail for recovery user password",
@@ -578,7 +578,7 @@
                         "avatarURL": {
                           "type": "string",
                           "description": "User avatar",
-                          "example": "http://..."
+                          "example": "http://www.gravatar.com/avatar/..."
                         },
                         "gender": {
                           "type": "string",
@@ -620,23 +620,40 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": true,
+                "description": "User personal Info",
                 "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "User name",
-                    "example": "User"
+                  "basicInfo": {
+                    "type": "object",
+                    "description": "User basic Info",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "User name",
+                        "example": "User"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "User email",
+                        "format": "email",
+                        "example": "watertracker.user@gmail.com"
+                      }
+                    }
                   },
-                  "email": {
-                    "type": "string",
-                    "description": "User email",
-                    "format": "email",
-                    "example": "watertracker.user@gmail.com"
-                  },
-                  "gender": {
-                    "type": "string",
-                    "description": "User gender",
-                    "example": "female"
+                  "securityCredentials": {
+                    "type": "object",
+                    "description": "User security Info",
+                    "properties": {
+                      "oldPassword": {
+                        "type": "string",
+                        "description": "Old user password",
+                        "example": "oLd_PaSsWoRd!"
+                      },
+                      "newPassword": {
+                        "type": "string",
+                        "description": "New user password",
+                        "example": "nEw_PaSsWoRd!"
+                      }
+                    }
                   }
                 }
               }
@@ -675,7 +692,7 @@
                         "avatarURL": {
                           "type": "string",
                           "description": "User avatar",
-                          "example": "http://..."
+                          "example": "http://www.gravatar.com/avatar/..."
                         },
                         "gender": {
                           "type": "string",
