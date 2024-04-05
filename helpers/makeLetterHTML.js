@@ -5,10 +5,9 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
 
   const verificationPath = `${referer}WaterTrackerFrontend/verification/${user.verificationToken}`;
 
-  const verificationPathBack = `
-    ${req.protocol}://${req.get("host")}/api/auth/verify/${
-    user.verificationToken
-  }`;
+  const verificationPathBack = `${req.protocol}://${req.get(
+    "host"
+  )}/api/auth/verify/${user.verificationToken}`;
 
   const htmlContent = `
   <!DOCTYPE html>
@@ -66,35 +65,19 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
 <body>
   <div class="container">
     <div class="header">
-      <h1>Welcome to Tracker of water!</h1>
+      <h1>Activate Your Tracker of Water Account</h1>
     </div>
     <div class="content">
-      <p>Thank you for joining us on your hydration journey!</p>
-      <p>Please click the button below to confirm your email address ${user.email}:</p>
-      <a href="${verificationPath}" class="confirm-button">Confirm Email</a>
-      <p>If the button above does not work, please copy the following link and paste it into your browser's address bar to proceed:</p>
+      <p>We're excited to have you on board!</p>
+      <p>To get started, please activate your account by clicking the button below:</p>
+      <a href="${verificationPath}" class="confirm-button">Activate Account</a>
+      <p>If you encounter any issues with the button, you can also activate your account using this link:</p>
       <p><a href="${verificationPath}">${verificationPath}</a></p>
-      <h2>Лінка для підтверждення напряму на бек-енді (тимчасова)</h2>
+      <p>For direct backend confirmation (temporary link):</p>
       <p><a href="${verificationPathBack}">${verificationPathBack}</a></p>
-      <h2>Why Stay Hydrated?</h2>
-      <ul>
-        <li>Supply of nutrients to all organs</li>
-        <li>Providing oxygen to the lungs</li>
-        <li>Maintaining the work of the heart</li>
-        <li>Release of processed substances</li>
-        <li>Ensuring the stability of the internal environment</li>
-        <li>Maintaining within the normal temperature</li>
-        <li>Maintaining an immune system capable of resisting disease</li>
-      </ul>
-      <h2>Tracker Benefits</h2>
-      <ul>
-        <li>Drive healthy hydration habits</li>
-        <li>View and analyze your intake statistics</li>
-        <li>Set personal hydration goals</li>
-      </ul>
     </div>
     <div class="footer">
-      <p>If you have any questions or need assistance, please don't hesitate to contact us.</p>
+      <p>Need help? Reach out to our support team for assistance.</p>
     </div>
   </div>
 </body>
@@ -107,7 +90,8 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
     html: htmlContent,
   };
 
-  return letter;
+  // return letter;
+  return { verificationPath, verificationPathBack };
 };
 
 export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
@@ -115,10 +99,9 @@ export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
 
   const resetPasswordPath = `${referer}WaterTrackerFrontend/recovery/${user.passwordRecoveryToken}`;
 
-  const resetPasswordPathBack = `
-    ${req.protocol}://${req.get("host")}/api/auth/verify/${
-    user.passwordRecoveryToken
-  }`;
+  const resetPasswordPathBack = `${req.protocol}://${req.get(
+    "host"
+  )}/api/auth/verify/${user.passwordRecoveryToken}`;
 
   const htmlContent = `
   <!DOCTYPE html>
@@ -202,5 +185,6 @@ export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
     html: htmlContent,
   };
 
-  return letter;
+  // return letter;
+  return { resetPasswordPath, resetPasswordPathBack };
 };

@@ -4,7 +4,7 @@ import crypto from "node:crypto";
 import HttpError from "../helpers/HttpError.js";
 import * as usersServ from "../services/userServices.js";
 
-import { sendMail } from "../services/sendMailServices.js";
+// import { sendMail } from "../services/sendMailServices.js";
 import * as makeLetterHTML from "../helpers/makeLetterHTML.js";
 
 /**
@@ -57,11 +57,13 @@ export const createUser = async (req, res, next) => {
       subject
     );
 
-    sendMail(letter);
+    // sendMail(letter);
 
     res.status(201).send({
       user: {
         email: newUser.email,
+
+        ...letter,
       },
     });
   } catch (error) {
@@ -101,9 +103,7 @@ export const verificateUser = async (req, res, next) => {
       verificationToken: null,
     });
 
-    res.send({
-      message: "Verification successful",
-    });
+    res.send({ message: "Verification successful" });
   } catch (error) {
     next(error);
   }
@@ -146,17 +146,19 @@ export const reVerificateUser = async (req, res, next) => {
       throw HttpError(400, "Verification has already been passed");
     }
 
-    const subject = "Confirm the registration on Tracker of water";
+    const subject = "Action Required: Verify Your Water Tracker Account";
     const letter = makeLetterHTML.makeEmailVerificationLetterHTML(
       req,
       user,
       subject
     );
+    console.log("🚀 ~ letter:", letter);
 
-    sendMail(letter);
+    // sendMail(letter);
 
     res.send({
-      message: "Verification email sent",
+      message: `Verification email sent.`,
+      ...letter,
     });
   } catch (error) {
     next(error);
@@ -294,7 +296,7 @@ export const sendPasswordRecoveryEmail = async (req, res, next) => {
       subject
     );
 
-    sendMail(letter);
+    // sendMail(letter);
 
     res.json({
       message:
