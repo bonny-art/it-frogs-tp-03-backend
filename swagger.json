@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.6",
+    "version": "1.0.7",
     "title": "Water Tracker",
     "description": "A web application that allows you to track daily water consumption"
   },
@@ -45,11 +45,10 @@
 
         "responses": {
           "200": {
-            "description": "Successful operation",
-            "content": {}
+            "$ref": "#/components/responses/200"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -70,15 +69,10 @@
                 "required": ["email", "password"],
                 "properties": {
                   "email": {
-                    "type": "string",
-                    "description": "User e-mail",
-                    "format": "email",
-                    "example": "watertracker.user@gmail.com"
+                    "$ref": "#/components/email"
                   },
                   "password": {
-                    "type": "string",
-                    "description": "User password",
-                    "example": "watertracker.user_123"
+                    "$ref": "#/components/password"
                   }
                 }
               }
@@ -95,15 +89,10 @@
                   "type": "object",
                   "properties": {
                     "_id": {
-                      "type": "string",
-                      "description": "User id",
-                      "example": "1111-2222..."
+                      "$ref": "#/components/_id"
                     },
                     "email": {
-                      "type": "string",
-                      "description": "User email",
-                      "format": "email",
-                      "example": "watertracker.user@gmail.com"
+                      "$ref": "#/components/email"
                     }
                   }
                 }
@@ -111,13 +100,13 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           },
           "409": {
-            "description": "User with this email is already registered"
+            "$ref": "#/components/responses/409"
           }
         }
       }
@@ -127,8 +116,6 @@
       "post": {
         "tags": ["Auth"],
         "summary": "Send email for verification again",
-
-        "parameters": [],
 
         "requestBody": {
           "description": "User email",
@@ -140,10 +127,7 @@
                 "required": ["email"],
                 "properties": {
                   "email": {
-                    "type": "string",
-                    "description": "User email",
-                    "format": "email",
-                    "example": "watertracker.user@gmail.com"
+                    "$ref": "#/components/email"
                   }
                 }
               }
@@ -153,17 +137,16 @@
 
         "responses": {
           "200": {
-            "description": "Successful operation",
-            "content": {}
+            "$ref": "#/components/responses/200"
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -173,8 +156,6 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User login",
-
-        "parameters": [],
 
         "requestBody": {
           "description": "User email and password",
@@ -186,15 +167,10 @@
                 "required": ["email", "password"],
                 "properties": {
                   "email": {
-                    "type": "string",
-                    "description": "User email",
-                    "format": "email",
-                    "example": "watertracker.user@gmail.com"
+                    "$ref": "#/components/email"
                   },
                   "password": {
-                    "type": "string",
-                    "description": "User password",
-                    "example": "watertracker.user_123"
+                    "$ref": "#/components/password"
                   }
                 }
               }
@@ -211,39 +187,28 @@
                   "type": "object",
                   "properties": {
                     "token": {
-                      "type": "string",
-                      "description": "JWT string",
-                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MGU2ODE2MDc1ZGE5YWRhYmQ5YjRiMiIsImlhdCI6MTcxMjIyMjg2NiwiZXhwIjoxNzEyODI3NjY2fQ.6MbsBIgWPXbpqnXQB3FzlYsnTBGyEOZJo8HFkcIdzNo"
+                      "$ref": "#/components/verificationTokenJwt"
                     },
                     "user": {
                       "type": "object",
                       "description": "User object",
                       "properties": {
                         "name": {
-                          "type": "string",
-                          "description": "User name",
-                          "example": "User"
+                          "$ref": "#/components/name"
                         },
                         "email": {
-                          "type": "string",
-                          "description": "User email",
-                          "format": "email",
-                          "example": "watertracker.user@gmail.com"
+                          "$ref": "#/components/email"
                         },
                         "avatarURL": {
-                          "type": "string",
-                          "description": "User avatar",
-                          "example": "http://www.gravatar.com/avatar/..."
+                          "$ref": "#/components/avatarURL"
                         },
                         "gender": {
-                          "type": "string",
-                          "description": "User gender",
-                          "example": "female"
+                          "$ref": "#/components/gender"
                         },
                         "dailyWaterGoal": {
                           "type": "integer",
                           "format": "int32",
-                          "description": "Daily water norma",
+                          "description": "Daily water norm",
                           "example": 2000
                         }
                       }
@@ -254,13 +219,13 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -271,7 +236,6 @@
         "tags": ["Auth"],
         "summary": "User has logged out",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "responses": {
@@ -287,25 +251,16 @@
                       "description": "User object",
                       "properties": {
                         "name": {
-                          "type": "string",
-                          "description": "User name",
-                          "example": "User"
+                          "$ref": "#/components/name"
                         },
                         "email": {
-                          "type": "string",
-                          "description": "User email",
-                          "format": "email",
-                          "example": "watertracker.user@gmail.com"
+                          "$ref": "#/components/email"
                         },
                         "avatarURL": {
-                          "type": "string",
-                          "description": "User avatar",
-                          "example": "http://www.gravatar.com/avatar/..."
+                          "$ref": "#/components/avatarURL"
                         },
                         "gender": {
-                          "type": "string",
-                          "description": "User gender",
-                          "example": "female"
+                          "$ref": "#/components/gender"
                         }
                       }
                     }
@@ -315,24 +270,23 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
     },
 
-    "/auth/recover-password": {
+    "/auth/recover": {
       "post": {
         "tags": ["Auth"],
         "summary": "Send e-mail for recovery user password",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
@@ -345,10 +299,7 @@
                 "required": ["email"],
                 "properties": {
                   "email": {
-                    "type": "string",
-                    "description": "User email",
-                    "format": "email",
-                    "example": "watertracker.user@gmail.com"
+                    "$ref": "#/components/email"
                   }
                 }
               }
@@ -358,16 +309,16 @@
 
         "responses": {
           "200": {
-            "description": "Successful operation"
+            "$ref": "#/components/responses/200"
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -380,46 +331,33 @@
 
         "parameters": [
           {
-            "name": "verificationToken",
-            "in": "path",
-            "type": "string",
-            "description": "Verification token from e-mail ",
-            "required": true
+            "$ref": "#/components/verificationTokenParameters"
           }
         ],
 
         "responses": {
           "200": {
-            "description": "Successful operation",
-            "content": {}
+            "$ref": "#/components/responses/200"
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
     },
 
-    "/auth/recover-password/{passwordRecoveryToken}": {
+    "/auth/recover/{passwordRecoveryToken}": {
       "patch": {
         "tags": ["Auth"],
         "summary": "Token from e-mail for recovery user password",
 
-        "parameters": [
-          {
-            "name": "passwordRecoveryToken",
-            "in": "path",
-            "type": "string",
-            "description": "Verification token from e-mail ",
-            "required": true
-          }
-        ],
+        "parameters": [{ "$ref": "#/components/verificationTokenParameters" }],
 
         "security": [{ "Bearer": [] }],
 
@@ -430,12 +368,10 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["email"],
+                "required": ["password"],
                 "properties": {
                   "password": {
-                    "type": "string",
-                    "description": "User password",
-                    "example": "watertracker.user_123"
+                    "$ref": "#/components/password"
                   }
                 }
               }
@@ -448,13 +384,13 @@
             "description": "Successful operation"
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -465,7 +401,6 @@
         "tags": ["User"],
         "summary": "Get user profile",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "responses": {
@@ -481,30 +416,19 @@
                       "description": "User object",
                       "properties": {
                         "_id": {
-                          "type": "string",
-                          "description": "User id",
-                          "example": "1111-2222..."
+                          "$ref": "#/components/_id"
                         },
                         "name": {
-                          "type": "string",
-                          "description": "User name",
-                          "example": "User"
+                          "$ref": "#/components/name"
                         },
                         "email": {
-                          "type": "string",
-                          "description": "User email",
-                          "format": "email",
-                          "example": "watertracker.user@gmail.com"
+                          "$ref": "#/components/email"
                         },
                         "avatarURL": {
-                          "type": "string",
-                          "description": "User avatar",
-                          "example": "http://www.gravatar.com/avatar/..."
+                          "$ref": "#/components/avatarURL"
                         },
                         "gender": {
-                          "type": "string",
-                          "description": "User gender",
-                          "example": "female"
+                          "$ref": "#/components/gender"
                         }
                       }
                     }
@@ -514,13 +438,13 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -531,7 +455,6 @@
         "tags": ["User"],
         "summary": "Upload user avatar",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
@@ -565,25 +488,16 @@
                       "description": "User object",
                       "properties": {
                         "name": {
-                          "type": "string",
-                          "description": "User name",
-                          "example": "User"
+                          "$ref": "#/components/name"
                         },
                         "email": {
-                          "type": "string",
-                          "description": "User email",
-                          "format": "email",
-                          "example": "watertracker.user@gmail.com"
+                          "$ref": "#/components/email"
                         },
                         "avatarURL": {
-                          "type": "string",
-                          "description": "User avatar",
-                          "example": "http://..."
+                          "$ref": "#/components/avatarURL"
                         },
                         "gender": {
-                          "type": "string",
-                          "description": "User gender",
-                          "example": "female"
+                          "$ref": "#/components/gender"
                         }
                       }
                     }
@@ -593,13 +507,13 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -610,7 +524,6 @@
         "tags": ["User"],
         "summary": "Update user profile",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
@@ -620,23 +533,31 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": true,
+                "description": "User personal Info",
                 "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "User name",
-                    "example": "User"
+                  "basicInfo": {
+                    "type": "object",
+                    "description": "User basic Info",
+                    "properties": {
+                      "name": {
+                        "$ref": "#/components/name"
+                      },
+                      "email": {
+                        "$ref": "#/components/email"
+                      }
+                    }
                   },
-                  "email": {
-                    "type": "string",
-                    "description": "User email",
-                    "format": "email",
-                    "example": "watertracker.user@gmail.com"
-                  },
-                  "gender": {
-                    "type": "string",
-                    "description": "User gender",
-                    "example": "female"
+                  "securityCredentials": {
+                    "type": "object",
+                    "description": "User security Info",
+                    "properties": {
+                      "oldPassword": {
+                        "$ref": "#/components/email"
+                      },
+                      "newPassword": {
+                        "$ref": "#/components/email"
+                      }
+                    }
                   }
                 }
               }
@@ -657,30 +578,19 @@
                       "description": "User object",
                       "properties": {
                         "_id": {
-                          "type": "string",
-                          "description": "User id",
-                          "example": "User"
+                          "$ref": "#/components/_id"
                         },
                         "name": {
-                          "type": "string",
-                          "description": "User name",
-                          "example": "User"
+                          "$ref": "#/components/name"
                         },
                         "email": {
-                          "type": "string",
-                          "description": "User email",
-                          "format": "email",
-                          "example": "watertracker.user@gmail.com"
+                          "$ref": "#/components/email"
                         },
                         "avatarURL": {
-                          "type": "string",
-                          "description": "User avatar",
-                          "example": "http://..."
+                          "$ref": "#/components/avatarURL"
                         },
                         "gender": {
-                          "type": "string",
-                          "description": "User gender",
-                          "example": "female"
+                          "$ref": "#/components/gender"
                         }
                       }
                     }
@@ -690,13 +600,13 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       },
@@ -705,7 +615,6 @@
         "tags": ["User"],
         "summary": "Delete user profile and data",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "responses": {
@@ -721,9 +630,7 @@
                       "description": "User object",
                       "properties": {
                         "name": {
-                          "type": "string",
-                          "description": "User name",
-                          "example": "User"
+                          "$ref": "#/components/name"
                         }
                       }
                     }
@@ -733,13 +640,13 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -750,22 +657,22 @@
         "tags": ["WaterRate"],
         "summary": "Change water goal",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
-          "description": "User daily water norma",
+          "description": "User daily water norm",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["email", "dailyWaterGoal"],
+                "required": ["date", "dailyWaterGoal"],
                 "properties": {
+                  "date": {
+                    "$ref": "#/components/date"
+                  },
                   "dailyWaterGoal": {
-                    "type": "integer",
-                    "format": "int32",
-                    "example": 2500
+                    "$ref": "#/components/dailyWaterGoal"
                   }
                 }
               }
@@ -776,16 +683,48 @@
         "responses": {
           "200": {
             "description": "Successful operation",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "description": "User object",
+                      "properties": {
+                        "name": {
+                          "$ref": "#/components/name"
+                        },
+                        "email": {
+                          "$ref": "#/components/email"
+                        },
+                        "avatarURL": {
+                          "$ref": "#/components/avatarURL"
+                        },
+                        "gender": {
+                          "$ref": "#/components/gender"
+                        },
+                        "dailyWater": {
+                          "$ref": "#/components/dailyWaterGoal"
+                        }
+                      }
+                    },
+                    "newDailyWater": {
+                      "$ref": "#/components/dailyWaterGoal"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -796,7 +735,6 @@
         "tags": ["Water"],
         "summary": "Create water record",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
@@ -808,19 +746,11 @@
                 "type": "object",
                 "required": true,
                 "properties": {
-                  "ml": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "User water consumption amount (ml)",
-                    "minimum": 0,
-                    "maximum": 5000,
-                    "example": 250
-                  },
                   "date": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "User water consumption date and time",
-                    "example": "2022-02-24T08:30:00Z"
+                    "$ref": "#/components/date"
+                  },
+                  "ml": {
+                    "$ref": "#/components/consumedWaterValue"
                   }
                 }
               }
@@ -831,16 +761,45 @@
         "responses": {
           "200": {
             "description": "Successful operation",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "$ref": "#/components/_id"
+                    },
+                    "entryDate": {
+                      "$ref": "#/components/date"
+                    },
+                    "dailyWaterGoal": {
+                      "$ref": "#/components/dailyWaterGoal"
+                    },
+                    "consumedWater": {
+                      "$ref": "#/components/consumedWaterValue"
+                    },
+                    "consumedTimes": {
+                      "$ref": "#/components/consumedTimes"
+                    },
+                    "consumedWaterPercentage": {
+                      "$ref": "#/components/consumedWaterPercentage"
+                    },
+                    "waterIntakes": {
+                      "$ref": "#/components/waterIntakes"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -851,7 +810,6 @@
         "tags": ["Water"],
         "summary": "Change water record",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
@@ -864,18 +822,10 @@
                 "required": true,
                 "properties": {
                   "ml": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "User water consumption amount (ml)",
-                    "minimum": 0,
-                    "maximum": 5000,
-                    "example": 250
+                    "$ref": "#/components/consumedWaterValue"
                   },
                   "date": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "User water consumption date and time",
-                    "example": "2022-02-24T08:30:00Z"
+                    "$ref": "#/components/date"
                   }
                 }
               }
@@ -885,17 +835,16 @@
 
         "responses": {
           "200": {
-            "description": "Successful operation",
-            "content": {}
+            "$ref": "#/components/responses/200"
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       },
@@ -904,7 +853,6 @@
         "tags": ["Water"],
         "summary": "Delete user water record",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
@@ -917,10 +865,7 @@
                 "required": true,
                 "properties": {
                   "date": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "User water consumption date and time",
-                    "example": "2022-02-24T08:30:00Z"
+                    "$ref": "#/components/date"
                   }
                 }
               }
@@ -930,17 +875,16 @@
 
         "responses": {
           "200": {
-            "description": "Successful operation",
-            "content": {}
+            "$ref": "#/components/responses/200"
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -951,7 +895,6 @@
         "tags": ["WaterToday"],
         "summary": "Get current date water records",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
@@ -964,10 +907,7 @@
                 "required": true,
                 "properties": {
                   "date": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "User water consumption date and time",
-                    "example": "2022-02-24T08:30:00Z"
+                    "$ref": "#/components/date"
                   }
                 }
               }
@@ -977,17 +917,16 @@
 
         "responses": {
           "200": {
-            "description": "Successful operation",
-            "content": {}
+            "$ref": "#/components/responses/200"
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -998,24 +937,22 @@
         "tags": ["WaterMonth"],
         "summary": "Get month water records",
 
-        "parameters": [],
         "security": [{ "Bearer": [] }],
 
         "requestBody": {},
 
         "responses": {
           "200": {
-            "description": "Successful operation",
-            "content": {}
+            "$ref": "#/components/responses/200"
           },
           "400": {
-            "description": "Bad request"
+            "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -1035,42 +972,25 @@
         ],
         "properties": {
           "name": {
-            "type": "string",
-            "description": "User name",
-            "example": "User"
+            "$ref": "#/components/name"
           },
           "email": {
-            "type": "string",
-            "description": "User email",
-            "format": "email",
-            "example": "watertracker.user@gmail.com"
+            "$ref": "#/components/email"
           },
           "password": {
-            "type": "string",
-            "description": "User password",
-            "example": "watertracker.user_123"
+            "$ref": "#/components/password"
           },
           "gender": {
-            "type": "string",
-            "description": "User gender",
-            "enum": ["female", "male"],
-            "default": "female",
-            "example": "female"
+            "$ref": "#/components/gender"
           },
           "avatarURL": {
-            "type": "string",
-            "description": "User avatar",
-            "default": ""
+            "$ref": "#/components/avatarURL"
           },
           "verificationToken": {
-            "type": "string",
-            "description": "e-mail verification token",
-            "default": ""
+            "$ref": "#/components/verificationTokenEmail"
           },
           "token": {
-            "type": "string",
-            "description": "User JWT string",
-            "default": null
+            "$ref": "#/components/verificationTokenJwt"
           },
           "verify": {
             "type": "boolean",
@@ -1078,13 +998,7 @@
             "default": false
           },
           "dailyWaterGoal": {
-            "type": "integer",
-            "format": "int32",
-            "description": "User daily water norma",
-            "minimum": 0,
-            "maximum": 15000,
-            "default": 2000,
-            "example": 5000
+            "$ref": "#/components/dailyWaterGoal"
           }
         }
       },
@@ -1094,80 +1008,157 @@
         "required": ["userId", "entryDate"],
         "properties": {
           "userId": {
-            "type": "string",
-            "format": "ObjectId",
-            "description": "Backend-generated unique identifier",
-            "example": "ObjectId('5f50c31b8e7b9e432c3fb8c3')"
+            "$ref": "#/components/_id"
           },
           "entryDate": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Date and time of data entry",
-            "example": "2022-02-24T08:30:00Z"
+            "$ref": "#/components/date"
           },
           "dailyWaterGoal": {
-            "type": "integer",
-            "format": "int32",
-            "description": "User daily water norma",
-            "minimum": 0,
-            "maximum": 15000,
-            "default": 2000,
-            "example": 2500
+            "$ref": "#/components/dailyWaterGoal"
           },
           "consumedWater": {
-            "type": "integer",
-            "format": "int32",
-            "description": "User water consumption amount (ml)",
-            "minimum": 0,
-            "default": 0,
-            "example": 250
+            "$ref": "#/components/consumedWaterValue"
           },
           "consumedTimes": {
-            "type": "integer",
-            "format": "int32",
-            "description": "User water consumption amount (times)",
-            "minimum": 0,
-            "default": 0,
-            "example": 4
+            "$ref": "#/components/consumedTimes"
           },
           "consumedWaterPercentage": {
-            "type": "integer",
-            "format": "int32",
-            "description": "User water consumption percent (relative to the norm)",
-            "minimum": 0,
-            "default": 0,
-            "example": 80
+            "$ref": "#/components/consumedWaterPercentage"
           },
           "waterIntakes": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": ["_id", "ml", "consumedAt"],
-              "properties": {
-                "_id": {
-                  "type": "string",
-                  "format": "ObjectId",
-                  "description": "Backend-generated unique identifier",
-                  "example": "ObjectId('5f50c31b8e7b9e432c3fb8c3')"
-                },
-                "ml": {
-                  "type": "integer",
-                  "format": "int32",
-                  "description": "User water consumption amount (ml)",
-                  "minimum": 0,
-                  "maximum": 5000,
-                  "example": 250
-                },
-                "consumedAt": {
-                  "type": "string",
-                  "format": "date-time",
-                  "description": "User water consumption date and time",
-                  "example": "2022-02-24T08:30:00Z"
-                }
-              }
-            }
+            "$ref": "#/components/waterIntakes"
           }
         }
+      }
+    },
+
+    "_id": {
+      "type": "string",
+      "format": "ObjectId",
+      "description": "Backend-generated unique identifier",
+      "example": "ObjectId('5f50c31b8e7b9e432c3fb8c3')"
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date and time",
+      "example": "2022-02-24T08:30:00Z"
+    },
+    "name": {
+      "type": "string",
+      "description": "User name",
+      "example": "User"
+    },
+    "gender": {
+      "type": "string",
+      "description": "User gender",
+      "default": "female",
+      "enum": ["female", "male"],
+      "example": "female"
+    },
+    "email": {
+      "type": "string",
+      "description": "User email",
+      "format": "email",
+      "example": "watertracker.user@gmail.com"
+    },
+    "password": {
+      "type": "string",
+      "description": "User password",
+      "example": "watertracker.user_123"
+    },
+    "avatarURL": {
+      "type": "string",
+      "description": "User avatar",
+      "example": "http://www.gravatar.com/avatar/..."
+    },
+    "verificationTokenJwt": {
+      "type": "string",
+      "description": "verification token",
+      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MGU2ODE2MDc1ZGE5YWRhYmQ5YjRiMiIsImlhdCI6MTcxMjIyMjg2NiwiZXhwIjoxNzEyODI3NjY2fQ.6MbsBIgWPXbpqnXQB3FzlYsnTBGyEOZJo8HFkcIdzNo"
+    },
+    "verificationTokenEmail": {
+      "type": "string",
+      "description": "verification token"
+    },
+    "verificationTokenParameters": {
+      "name": "passwordRecoveryToken",
+      "in": "path",
+      "type": "string",
+      "description": "Verification token from e-mail ",
+      "required": true
+    },
+
+    "dailyWaterGoal": {
+      "type": "integer",
+      "format": "int32",
+      "description": "User daily water norm",
+      "minimum": 0,
+      "maximum": 15000,
+      "default": 2000,
+      "example": 2500
+    },
+    "consumedWaterValue": {
+      "type": "integer",
+      "format": "int32",
+      "description": "User water consumption amount (ml)",
+      "minimum": 0,
+      "default": 0,
+      "example": 250
+    },
+    "consumedTimes": {
+      "type": "integer",
+      "format": "int32",
+      "description": "User water consumption amount (times)",
+      "minimum": 0,
+      "default": 0,
+      "example": 4
+    },
+    "consumedWaterPercentage": {
+      "type": "integer",
+      "format": "int32",
+      "description": "User water consumption percent (relative to the norm)",
+      "minimum": 0,
+      "default": 0,
+      "example": 80
+    },
+    "waterIntakes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["_id", "ml", "consumedAt"],
+        "properties": {
+          "_id": {
+            "$ref": "#/components/_id"
+          },
+          "ml": {
+            "$ref": "#/components/consumedWaterValue"
+          },
+          "consumedAt": {
+            "$ref": "#/components/date"
+          }
+        }
+      }
+    },
+
+    "responses": {
+      "200": {
+        "description": "Successful operation"
+      },
+      "201": {
+        "description": "Successful operation"
+      },
+      "400": {
+        "description": "Bad request"
+      },
+      "401": {
+        "description": "Unauthorized"
+      },
+      "404": {
+        "description": "Resource not found"
+      },
+      "409": {
+        "description": "User with this email is already registered"
       }
     },
 
