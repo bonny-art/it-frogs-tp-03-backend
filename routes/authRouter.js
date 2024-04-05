@@ -25,7 +25,7 @@ const authRouter = express.Router();
 
 authRouter.post("/register", validateBody(createUserSchema), createUser);
 
-authRouter.get("/verify/:verificationToken", verificateUser);
+authRouter.patch("/verify/:verificationToken", verificateUser);
 
 authRouter.post("/verify", validateBody(sendEmailUserSchema), reVerificateUser);
 
@@ -39,7 +39,7 @@ authRouter.post(
   sendPasswordRecoveryEmail
 );
 
-authRouter.get(
+authRouter.patch(
   "/recover-password/:passwordRecoveryToken",
   validateBody(changePasswordUserSchema),
   recoverPassword

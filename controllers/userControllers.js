@@ -24,15 +24,6 @@ export const uploadAvatar = async (req, res, next) => {
       throw HttpError(400, "Select an avatar file to upload");
     }
 
-    // await resizeImage(req.file.path, 80, 80);
-
-    // fs.rename(
-    //   req.file.path,
-    //   path.join(process.cwd(), "public", "avatars", req.file.filename)
-    // );
-
-    // const avatarURL = path.join("avatars", req.file.filename);
-
     const result = await cloudinary.uploader.upload(req.file.path, {
       transformation: [
         { width: 80, height: 80, crop: "fill", gravity: "auto", radius: "max" },
@@ -71,7 +62,32 @@ export const updateUser = async (req, res, next) => {
       throw HttpError(400, "Body must have at least one field");
     }
 
-    const newUser = await usersServ.updateUser(req.user.id, req.body);
+    const payload = req.body.basicInfo;
+
+    const oldPassword = req.body.securityCredentials?.oldPassword;
+    const newPassword = req.body.securityCredentials?.newPassword;
+
+    if (oldPassword) {
+      const { password } = await usersServ.getUserById(req.user._id);
+
+      const isOldPasswordValid = await usersServ.isPasswordValid(
+        oldPassword,
+        password
+      );
+
+      if (!isOldPasswordValid) {
+        throw HttpError(
+          401,
+          "Your old password is incorrect. Please try again"
+        );
+      }
+
+      const hashedPassword = await usersServ.hashPassword(newPassword);
+
+      payload.password = hashedPassword;
+    }
+
+    const newUser = await usersServ.updateUser(req.user.id, payload);
 
     const { email, name, gender, dailyWaterGoal, avatarURL } = newUser;
 
