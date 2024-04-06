@@ -39,6 +39,12 @@ export const createWaterRecord = async (payload) => {
   return waterRecord;
 };
 
+export const deleteWaterRecords = async (query) => {
+  const result = await WaterRecord.deleteMany(query);
+
+  return result;
+};
+
 export const addWaterIntake = async (params, payload) => {
   const { ml, consumedAt, waterPercentage } = payload;
 

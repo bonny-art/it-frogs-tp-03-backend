@@ -11,3 +11,7 @@ export const updateUserSchema = Joi.object({
     newPassword: Joi.string().optional(),
   }).optional(),
 }).with("securityCredentials.oldPassword", "securityCredentials.newPassword");
+
+export const deleteUserSchema = Joi.object({
+  password: Joi.string().required(),
+});

@@ -8,7 +8,7 @@ import crypto from "node:crypto";
 
 import HttpError from "../helpers/HttpError.js";
 import * as usersServ from "../services/userServices.js";
-// import { resizeImage } from "../services/imageServices.js";
+import * as waterServices from "../services/waterServices.js";
 
 const { CLOUD_NAME, API_KEY, API_SECRET } = process.env;
 
@@ -62,7 +62,7 @@ export const updateUser = async (req, res, next) => {
       throw HttpError(400, "Body must have at least one field");
     }
 
-    const payload = req.body.basicInfo;
+    const payload = { ...req.body.basicInfo };
 
     const oldPassword = req.body.securityCredentials?.oldPassword;
     const newPassword = req.body.securityCredentials?.newPassword;
@@ -92,6 +92,55 @@ export const updateUser = async (req, res, next) => {
     const { email, name, gender, dailyWaterGoal, avatarURL } = newUser;
 
     res.send({ email, name, gender, dailyWaterGoal, avatarURL });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Controller for deleting a user account.
+ *
+ * @param {Object} req - The request object containing the user's password.
+ * @param {Object} res - The response object used to send back the deletion details.
+ * @param {Function} next - The next middleware function in the application's request-response cycle.
+ *
+ * This function performs the following actions:
+ * 1. Extracts the user's password from the request body.
+ * 2. Constructs a query object using the user's ID from the request.
+ * 3. Retrieves the user's hashed password from the database.
+ * 4. Validates the provided password against the stored hash.
+ * 5. If the password is invalid, throws a 401 HTTP error indicating lack of permissions.
+ * 6. Deletes the user's account from the database.
+ * 7. Deletes the user's associated water consumption records.
+ * 8. Sends a response with the user's email, name, and the count of deleted records.
+ *
+ * If any errors occur, such as an invalid password or database issues,
+ * an appropriate HTTP error is thrown and handled by the next middleware function.
+ */
+
+export const deleteUser = async (req, res, next) => {
+  const userPassword = req.body.password;
+  const query = { userId: req.user.id };
+
+  try {
+    const { password } = await usersServ.getUserById(req.user._id);
+
+    const isUserPasswordValid = await usersServ.isPasswordValid(
+      userPassword,
+      password
+    );
+
+    if (!isUserPasswordValid) {
+      throw HttpError(401, "You don`t have permissions to delete this account");
+    }
+
+    const user = await usersServ.deleteUser(req.user.id);
+
+    const result = await waterServices.deleteWaterRecords(query);
+
+    const { email, name } = user;
+
+    res.send({ email, name, recordsDeleted: result.deletedCount });
   } catch (error) {
     next(error);
   }

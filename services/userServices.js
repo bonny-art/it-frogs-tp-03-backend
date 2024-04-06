@@ -81,3 +81,9 @@ export const updateUser = async (userId, newUserInfo) => {
 
   return updatedUser;
 };
+
+export const deleteUser = async (userId) => {
+  const user = await User.findByIdAndDelete(userId);
+
+  return user;
+};
