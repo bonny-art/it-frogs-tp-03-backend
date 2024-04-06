@@ -34,13 +34,13 @@ authRouter.post("/login", validateBody(loginUserSchema), loginUser);
 authRouter.post("/logout", auth, logoutUser);
 
 authRouter.post(
-  "/recover-password",
+  "/recover",
   validateBody(sendEmailUserSchema),
   sendPasswordRecoveryEmail
 );
 
 authRouter.patch(
-  "/recover-password/:passwordRecoveryToken",
+  "/recover/:passwordRecoveryToken",
   validateBody(changePasswordUserSchema),
   recoverPassword
 );
