@@ -91,7 +91,7 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
   };
 
   // return letter;
-  return { verificationPath, verificationPathBack };
+  return { verificationPath };
 };
 
 export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
@@ -186,5 +186,5 @@ export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
   };
 
   // return letter;
-  return { resetPasswordPath, resetPasswordPathBack };
+  return { resetPasswordPath };
 };

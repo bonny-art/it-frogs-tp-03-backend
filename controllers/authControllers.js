@@ -301,6 +301,7 @@ export const sendPasswordRecoveryEmail = async (req, res, next) => {
     res.json({
       message:
         "Password reset instructions have been sent to your email. Please check your inbox.",
+      letter,
     });
   } catch (error) {
     next(error);
