@@ -90,9 +90,11 @@ export const createUser = async (req, res, next) => {
 
 export const verificateUser = async (req, res, next) => {
   const { verificationToken } = req.params;
+  console.log("🚀 ~ verificationToken:", verificationToken);
 
   try {
     const user = await usersServ.getUserByProperty({ verificationToken });
+    console.log("🚀 ~ user:", user);
 
     if (!user) {
       throw HttpError(404, "User not found");
