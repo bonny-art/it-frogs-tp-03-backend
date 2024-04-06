@@ -3,9 +3,6 @@ import path from "path";
 
 import { v2 as cloudinary } from "cloudinary";
 
-import gravatar from "gravatar";
-import crypto from "node:crypto";
-
 import HttpError from "../helpers/HttpError.js";
 import * as usersServ from "../services/userServices.js";
 import * as waterServices from "../services/waterServices.js";
@@ -17,6 +14,25 @@ cloudinary.config({
   api_key: API_KEY,
   api_secret: API_SECRET,
 });
+
+/**
+ * Controller for uploading a user's avatar.
+ *
+ * @param {Object} req - The request object containing the file to be uploaded.
+ * @param {Object} res - The response object used to send back the URL of the uploaded avatar.
+ * @param {Function} next - The next middleware function in the application's request-response cycle.
+ *
+ * This function performs the following actions:
+ * 1. Checks if a file is included in the request; if not, throws a 400 HTTP error.
+ * 2. Uploads the file to Cloudinary with specified transformations and format settings.
+ * 3. Retrieves the URL of the uploaded image from the Cloudinary response.
+ * 4. Deletes the local file from the server using the filesystem module.
+ * 5. Updates the user's profile in the database with the new avatar URL.
+ * 6. Sends a response with the avatar URL.
+ *
+ * If any errors occur, such as file upload issues or database update problems,
+ * the error is caught and passed to the next middleware function for error handling.
+ */
 
 export const uploadAvatar = async (req, res, next) => {
   try {
@@ -44,6 +60,22 @@ export const uploadAvatar = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * Controller for retrieving the current user's profile information.
+ *
+ * @param {Object} req - The request object containing the user's identification.
+ * @param {Object} res - The response object used to send back the user's profile data.
+ * @param {Function} next - The next middleware function in the application's request-response cycle.
+ *
+ * This function performs the following actions:
+ * 1. Retrieves the current user's data from the database using their ID.
+ * 2. Extracts the user's email, name, gender, daily water goal, and avatar URL from the retrieved data.
+ * 3. Sends a response with the extracted user profile information.
+ *
+ * If any errors occur, such as issues with database retrieval,
+ * the error is caught and passed to the next middleware function for error handling.
+ */
 
 export const getCurrentUser = async (req, res, next) => {
   try {
