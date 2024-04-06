@@ -35,7 +35,10 @@ export const createUser = async (req, res, next) => {
     const name = normalizedEmail.split("@")[0];
     const user = await usersServ.getUserByProperty({ email: normalizedEmail });
     if (user) {
-      throw HttpError(409, "Email in use");
+      throw HttpError(
+        409,
+        "Email already in use. Please try another or reset your password if this is your account."
+      );
     }
 
     const avatarURL = gravatar.url(email);
