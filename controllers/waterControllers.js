@@ -26,12 +26,22 @@ import * as waterServices from "../services/waterServices.js";
  */
 
 export const addWaterIntakeRecord = async (req, res, next) => {
-  const { data, ml } = req.body;
+  const { date, ml, timeZoneOffset } = req.body;
 
-  const consumedAt = new Date(`${data}:00.000Z`);
-  const entryDate = new Date(`${data}:00.000Z`);
+  const isoDate = new Date(date);
+  console.log("🚀 ~ isoDate:", isoDate);
+  isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
+  console.log("🚀 ~ isoDate:", isoDate);
 
+  const isoString = isoDate.toISOString();
+  console.log("🚀 ~ isoString:", isoString);
+  const consumedAt = new Date(isoString.replace(/\.\d{3}/, ".000"));
+  console.log("🚀 ~ consumedAt:", consumedAt);
+
+  const entryDate = new Date(new Date(isoString));
+  console.log("🚀 ~ entryDate:", entryDate);
   entryDate.setUTCHours(0, 0, 0, 0);
+  console.log("🚀 ~ entryDate:", entryDate);
 
   const { dailyWaterGoal, _id } = req.user;
 
@@ -56,6 +66,7 @@ export const addWaterIntakeRecord = async (req, res, next) => {
       update,
       options
     );
+    console.log("🚀 ~ dailyWater:", dailyWater);
 
     const waterPercentage =
       ((dailyWater.consumedWater + ml) / dailyWater.dailyWaterGoal) * 100;
@@ -101,13 +112,24 @@ export const addWaterIntakeRecord = async (req, res, next) => {
  */
 
 export const updateWaterIntakeRecord = async (req, res, next) => {
-  const { data, ml } = req.body;
   const { waterRecordId } = req.params;
 
-  const entryDate = new Date(`${data}:00.000Z`);
-  entryDate.setUTCHours(0, 0, 0, 0);
+  const { date, ml, timeZoneOffset } = req.body;
 
-  const consumedAt = new Date(`${data}:00.000Z`);
+  const isoDate = new Date(date);
+  console.log("🚀 ~ isoDate:", isoDate);
+  isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
+  console.log("🚀 ~ isoDate:", isoDate);
+
+  const isoString = isoDate.toISOString();
+  console.log("🚀 ~ isoString:", isoString);
+  const consumedAt = new Date(isoString.replace(/\.\d{3}/, ".000"));
+  console.log("🚀 ~ consumedAt:", consumedAt);
+
+  const entryDate = new Date(new Date(isoString));
+  console.log("🚀 ~ entryDate:", entryDate);
+  entryDate.setUTCHours(0, 0, 0, 0);
+  console.log("🚀 ~ entryDate:", entryDate);
 
   const { _id } = req.user;
 
@@ -181,11 +203,21 @@ export const updateWaterIntakeRecord = async (req, res, next) => {
  */
 
 export const removeWaterIntakeRecord = async (req, res, next) => {
-  const { data } = req.body;
   const { waterRecordId } = req.params;
+  const { date, timeZoneOffset } = req.body;
 
-  const entryDate = new Date(`${data}:00.000Z`);
+  const isoDate = new Date(date);
+  console.log("🚀 ~ isoDate:", isoDate);
+  isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
+  console.log("🚀 ~ isoDate:", isoDate);
+
+  const isoString = isoDate.toISOString();
+  console.log("🚀 ~ isoString:", isoString);
+
+  const entryDate = new Date(new Date(isoString));
+  console.log("🚀 ~ entryDate:", entryDate);
   entryDate.setUTCHours(0, 0, 0, 0);
+  console.log("🚀 ~ entryDate:", entryDate);
 
   const { _id } = req.user;
 
