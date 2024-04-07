@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.7",
+    "version": "1.0.8",
     "title": "Water Tracker",
     "description": "A web application that allows you to track daily water consumption"
   },
@@ -285,7 +285,7 @@
     "/auth/recover": {
       "post": {
         "tags": ["Auth"],
-        "summary": "Send e-mail for recovery user password",
+        "summary": "Send an email to recover the user's password",
 
         "security": [{ "Bearer": [] }],
 
