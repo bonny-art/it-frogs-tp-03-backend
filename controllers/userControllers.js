@@ -62,31 +62,43 @@ export const uploadAvatar = async (req, res, next) => {
 };
 
 /**
- * Controller for retrieving the current user's profile information.
+ * Retrieves the current user's information from the request object.
  *
- * @param {Object} req - The request object containing the user's identification.
- * @param {Object} res - The response object used to send back the user's profile data.
- * @param {Function} next - The next middleware function in the application's request-response cycle.
+ * @param {Request} req - The Express request object containing the authenticated user's data.
+ * @param {Response} res - The Express response object used to send back the user's data.
+ * @param {Function} next - The callback function to pass control to the next handler in case of an error.
  *
- * This function performs the following actions:
- * 1. Retrieves the current user's data from the database using their ID.
- * 2. Extracts the user's email, name, gender, daily water goal, and avatar URL from the retrieved data.
- * 3. Sends a response with the extracted user profile information.
+ * This function extracts the user's email, name, gender, daily water intake goal, and avatar URL from the request object.
+ * It then sends this information back to the client in the response body.
  *
- * If any errors occur, such as issues with database retrieval,
- * the error is caught and passed to the next middleware function for error handling.
+ * @throws {Error} If an error occurs during the process, it is passed to the next error handler.
  */
 
 export const getCurrentUser = async (req, res, next) => {
   try {
-    const currentUser = await usersServ.getUserById(req.user.id);
-    const { email, name, gender, dailyWaterGoal, avatarURL } = currentUser;
+    const { email, name, gender, dailyWaterGoal, avatarURL } = req.user;
 
     res.send({ email, name, gender, dailyWaterGoal, avatarURL });
   } catch (error) {
     next(error);
   }
 };
+
+/**
+ * Updates user information in the database.
+ *
+ * @param {Request} req - The Express request object containing user data to update.
+ * @param {Response} res - The Express response object used to send back the updated user data.
+ * @param {Function} next - The callback function to pass control to the next handler in case of an error.
+ *
+ * This function first checks if the request body contains at least one field to update.
+ * If so, it creates a new object with the user's basic information.
+ * In case the user attempts to change their password, the function verifies the old password,
+ * and if it's correct, updates it to a new, hashed password.
+ * After successfully updating the user information, the function sends the updated data back to the client.
+ *
+ * @throws {HttpError} When the request body is empty or the old password is incorrect.
+ */
 
 export const updateUser = async (req, res, next) => {
   try {
@@ -119,9 +131,9 @@ export const updateUser = async (req, res, next) => {
       payload.password = hashedPassword;
     }
 
-    const newUser = await usersServ.updateUser(req.user.id, payload);
+    const updatedUser = await usersServ.updateUser(req.user.id, payload);
 
-    const { email, name, gender, dailyWaterGoal, avatarURL } = newUser;
+    const { email, name, gender, dailyWaterGoal, avatarURL } = updatedUser;
 
     res.send({ email, name, gender, dailyWaterGoal, avatarURL });
   } catch (error) {
