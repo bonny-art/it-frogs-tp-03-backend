@@ -35,7 +35,10 @@ export const createUser = async (req, res, next) => {
     const name = normalizedEmail.split("@")[0];
     const user = await usersServ.getUserByProperty({ email: normalizedEmail });
     if (user) {
-      throw HttpError(409, "Email in use");
+      throw HttpError(
+        409,
+        "Email already in use. Please try another or reset your password if this is your account."
+      );
     }
 
     const avatarURL = gravatar.url(email);
@@ -90,9 +93,11 @@ export const createUser = async (req, res, next) => {
 
 export const verificateUser = async (req, res, next) => {
   const { verificationToken } = req.params;
+  console.log("🚀 ~ verificationToken:", verificationToken);
 
   try {
     const user = await usersServ.getUserByProperty({ verificationToken });
+    console.log("🚀 ~ user:", user);
 
     if (!user) {
       throw HttpError(404, "User not found");
@@ -301,6 +306,7 @@ export const sendPasswordRecoveryEmail = async (req, res, next) => {
     res.json({
       message:
         "Password reset instructions have been sent to your email. Please check your inbox.",
+      letter,
     });
   } catch (error) {
     next(error);

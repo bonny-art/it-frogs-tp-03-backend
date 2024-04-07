@@ -3,12 +3,9 @@ import path from "path";
 
 import { v2 as cloudinary } from "cloudinary";
 
-import gravatar from "gravatar";
-import crypto from "node:crypto";
-
 import HttpError from "../helpers/HttpError.js";
 import * as usersServ from "../services/userServices.js";
-// import { resizeImage } from "../services/imageServices.js";
+import * as waterServices from "../services/waterServices.js";
 
 const { CLOUD_NAME, API_KEY, API_SECRET } = process.env;
 
@@ -17,6 +14,25 @@ cloudinary.config({
   api_key: API_KEY,
   api_secret: API_SECRET,
 });
+
+/**
+ * Controller for uploading a user's avatar.
+ *
+ * @param {Object} req - The request object containing the file to be uploaded.
+ * @param {Object} res - The response object used to send back the URL of the uploaded avatar.
+ * @param {Function} next - The next middleware function in the application's request-response cycle.
+ *
+ * This function performs the following actions:
+ * 1. Checks if a file is included in the request; if not, throws a 400 HTTP error.
+ * 2. Uploads the file to Cloudinary with specified transformations and format settings.
+ * 3. Retrieves the URL of the uploaded image from the Cloudinary response.
+ * 4. Deletes the local file from the server using the filesystem module.
+ * 5. Updates the user's profile in the database with the new avatar URL.
+ * 6. Sends a response with the avatar URL.
+ *
+ * If any errors occur, such as file upload issues or database update problems,
+ * the error is caught and passed to the next middleware function for error handling.
+ */
 
 export const uploadAvatar = async (req, res, next) => {
   try {
@@ -45,6 +61,22 @@ export const uploadAvatar = async (req, res, next) => {
   }
 };
 
+/**
+ * Controller for retrieving the current user's profile information.
+ *
+ * @param {Object} req - The request object containing the user's identification.
+ * @param {Object} res - The response object used to send back the user's profile data.
+ * @param {Function} next - The next middleware function in the application's request-response cycle.
+ *
+ * This function performs the following actions:
+ * 1. Retrieves the current user's data from the database using their ID.
+ * 2. Extracts the user's email, name, gender, daily water goal, and avatar URL from the retrieved data.
+ * 3. Sends a response with the extracted user profile information.
+ *
+ * If any errors occur, such as issues with database retrieval,
+ * the error is caught and passed to the next middleware function for error handling.
+ */
+
 export const getCurrentUser = async (req, res, next) => {
   try {
     const currentUser = await usersServ.getUserById(req.user.id);
@@ -62,7 +94,7 @@ export const updateUser = async (req, res, next) => {
       throw HttpError(400, "Body must have at least one field");
     }
 
-    const payload = req.body.basicInfo;
+    const payload = { ...req.body.basicInfo };
 
     const oldPassword = req.body.securityCredentials?.oldPassword;
     const newPassword = req.body.securityCredentials?.newPassword;
@@ -92,6 +124,55 @@ export const updateUser = async (req, res, next) => {
     const { email, name, gender, dailyWaterGoal, avatarURL } = newUser;
 
     res.send({ email, name, gender, dailyWaterGoal, avatarURL });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Controller for deleting a user account.
+ *
+ * @param {Object} req - The request object containing the user's password.
+ * @param {Object} res - The response object used to send back the deletion details.
+ * @param {Function} next - The next middleware function in the application's request-response cycle.
+ *
+ * This function performs the following actions:
+ * 1. Extracts the user's password from the request body.
+ * 2. Constructs a query object using the user's ID from the request.
+ * 3. Retrieves the user's hashed password from the database.
+ * 4. Validates the provided password against the stored hash.
+ * 5. If the password is invalid, throws a 401 HTTP error indicating lack of permissions.
+ * 6. Deletes the user's account from the database.
+ * 7. Deletes the user's associated water consumption records.
+ * 8. Sends a response with the user's email, name, and the count of deleted records.
+ *
+ * If any errors occur, such as an invalid password or database issues,
+ * an appropriate HTTP error is thrown and handled by the next middleware function.
+ */
+
+export const deleteUser = async (req, res, next) => {
+  const userPassword = req.body.password;
+  const query = { userId: req.user.id };
+
+  try {
+    const { password } = await usersServ.getUserById(req.user._id);
+
+    const isUserPasswordValid = await usersServ.isPasswordValid(
+      userPassword,
+      password
+    );
+
+    if (!isUserPasswordValid) {
+      throw HttpError(401, "You don`t have permissions to delete this account");
+    }
+
+    const user = await usersServ.deleteUser(req.user.id);
+
+    const result = await waterServices.deleteWaterRecords(query);
+
+    const { email, name } = user;
+
+    res.send({ email, name, recordsDeleted: result.deletedCount });
   } catch (error) {
     next(error);
   }
