@@ -206,27 +206,32 @@ export const removeWaterIntakeRecord = async (req, res, next) => {
   const { waterRecordId } = req.params;
   const { date, timeZoneOffset } = req.body;
 
-  const isoDate = new Date(date);
-  console.log("🚀 ~ isoDate:", isoDate);
-  isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
-  console.log("🚀 ~ isoDate:", isoDate);
-
-  const isoString = isoDate.toISOString();
-  console.log("🚀 ~ isoString:", isoString);
-
-  const entryDate = new Date(new Date(isoString));
-  console.log("🚀 ~ entryDate:", entryDate);
-  entryDate.setUTCHours(0, 0, 0, 0);
-  console.log("🚀 ~ entryDate:", entryDate);
-
-  const { _id } = req.user;
-
-  const params = {
-    entryDate,
-    userId: _id,
-  };
-
   try {
+    if (!date) {
+      throw HttpError(400, "Incorrectly made request");
+    }
+
+    const isoDate = new Date(date);
+    console.log("🚀 ~ isoDate:", isoDate);
+    isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
+    console.log("🚀 ~ isoDate:", isoDate);
+
+    const isoString = isoDate.toISOString();
+
+    console.log("🚀 ~ isoString:", isoString);
+
+    const entryDate = new Date(new Date(isoString));
+    console.log("🚀 ~ entryDate:", entryDate);
+    entryDate.setUTCHours(0, 0, 0, 0);
+    console.log("🚀 ~ entryDate:", entryDate);
+
+    const { _id } = req.user;
+
+    const params = {
+      entryDate,
+      userId: _id,
+    };
+
     const dailyWater = await waterServices.findWaterRecord(params);
 
     if (!dailyWater) {
