@@ -206,16 +206,12 @@ export const removeWaterIntakeRecord = async (req, res, next) => {
   const { waterRecordId } = req.params;
   const { date, timeZoneOffset } = req.body;
 
+  const isoDate = new Date(date);
+  console.log("🚀 ~ isoDate:", isoDate);
+  isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
+  console.log("🚀 ~ isoDate:", isoDate);
+
   try {
-    if (!date) {
-      throw HttpError(400, "Incorrectly made request");
-    }
-
-    const isoDate = new Date(date);
-    console.log("🚀 ~ isoDate:", isoDate);
-    isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
-    console.log("🚀 ~ isoDate:", isoDate);
-
     const isoString = isoDate.toISOString();
 
     console.log("🚀 ~ isoString:", isoString);
