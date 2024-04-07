@@ -262,7 +262,6 @@ export const removeWaterIntake = async (params, payload) => {
  *
  * This service is useful for generating reports or visualizations of a user's water intake over a month.
  */
-
 export const getMonthWaterRecords = async (userId, startDate, endDate) => {
   const waterRecords = await WaterRecord.find(
     {
