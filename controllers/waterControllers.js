@@ -135,7 +135,8 @@ export const updateWaterIntakeRecord = async (req, res, next) => {
 
     const consumedWater = dailyWater.consumedWater - waterIntake.ml + ml;
 
-    const waterPercentage = (consumedWater / dailyWater.dailyWaterGoal) * 100;
+    const waterPercentage =
+      Math.round(consumedWater / dailyWater.dailyWaterGoal) * 100;
 
     const payload = {
       _id: waterIntake._id,
