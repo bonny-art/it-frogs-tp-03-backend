@@ -639,6 +639,21 @@
         "tags": ["WaterRate"],
         "summary": "Change water goal",
 
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "description": "Data by the date (YYYY-MM-DD)",
+            "schema": {
+              "type": "string",
+              "date": {
+                "$ref": "#/components/date"
+              }
+            }
+          }
+        ],
+
         "security": [{ "Bearer": [] }],
 
         "requestBody": {
@@ -648,11 +663,8 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["date", "dailyWaterGoal"],
+                "required": ["dailyWaterGoal"],
                 "properties": {
-                  "date": {
-                    "$ref": "#/components/date"
-                  },
                   "dailyWaterGoal": {
                     "$ref": "#/components/dailyWaterGoal"
                   }
@@ -671,25 +683,7 @@
                   "type": "object",
                   "properties": {
                     "user": {
-                      "type": "object",
-                      "description": "User object",
-                      "properties": {
-                        "name": {
-                          "$ref": "#/components/name"
-                        },
-                        "email": {
-                          "$ref": "#/components/email"
-                        },
-                        "avatarURL": {
-                          "$ref": "#/components/avatarURL"
-                        },
-                        "gender": {
-                          "$ref": "#/components/gender"
-                        },
-                        "dailyWater": {
-                          "$ref": "#/components/dailyWaterGoal"
-                        }
-                      }
+                      "$ref": "#/components/user"
                     },
                     "newDailyWater": {
                       "$ref": "#/components/dailyWaterGoal"
@@ -737,7 +731,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/waterResponse"
+                  "properties": {
+                    "newDailyWater": {
+                      "$ref": "#/components/waterResponse"
+                    }
+                  }
                 }
               }
             }
@@ -865,7 +863,14 @@
 
         "responses": {
           "200": {
-            "$ref": "#/components/responses/200"
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/waterResponse"
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/400"
@@ -902,7 +907,7 @@
             "name": "endDate",
             "in": "query",
             "required": true,
-            "description": "Until the date (YYYY-MM-DD)",
+            "description": "Up to and including the date (YYYY-MM-DD)",
             "schema": {
               "type": "string",
               "date": {
@@ -1045,6 +1050,27 @@
       "description": "User avatar",
       "example": "http://www.gravatar.com/avatar/..."
     },
+    "user": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "$ref": "#/components/email"
+        },
+        "name": {
+          "$ref": "#/components/name"
+        },
+        "gender": {
+          "$ref": "#/components/gender"
+        },
+        "dailyWaterGoal": {
+          "$ref": "#/components/dailyWaterGoal"
+        },
+        "avatarURL": {
+          "$ref": "#/components/avatarURL"
+        }
+      }
+    },
+
     "verificationTokenJwt": {
       "type": "string",
       "description": "verification token",
@@ -1136,20 +1162,26 @@
     "waterResponse": {
       "type": "object",
       "properties": {
-        "dailyWaterGoal": {
-          "$ref": "#/components/dailyWaterGoal"
+        "_id": {
+          "$ref": "#/components/_id"
         },
-        "consumedAt": {
+        "userId": {
+          "$ref": "#/components/_id"
+        },
+        "entryDate": {
           "$ref": "#/components/date"
-        },
-        "consumedWater": {
-          "$ref": "#/components/consumedWaterValue"
         },
         "consumedTimes": {
           "$ref": "#/components/consumedTimes"
         },
+        "consumedWater": {
+          "$ref": "#/components/consumedWaterValue"
+        },
         "consumedWaterPercentage": {
           "$ref": "#/components/consumedWaterPercentage"
+        },
+        "dailyWaterGoal": {
+          "$ref": "#/components/dailyWaterGoal"
         },
         "waterIntakes": {
           "$ref": "#/components/waterIntakes"
