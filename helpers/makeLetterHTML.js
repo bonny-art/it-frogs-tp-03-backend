@@ -11,7 +11,7 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
   console.log("🚀 ~ isSameDomain:", isSameDomain);
 
   const domain = isSameDomain
-    ? "https://nadiiapavliuchenko.github.io"
+    ? "https://nadiiapavliuchenko.github.io/"
     : `${reqUrlObject.protocol}//${reqUrlObject.host}/`;
   console.log("🚀 ~ domain:", domain);
 
