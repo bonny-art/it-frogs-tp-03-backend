@@ -76,9 +76,9 @@ export const uploadAvatar = async (req, res, next) => {
 
 export const getCurrentUser = async (req, res, next) => {
   try {
-    const { email, name, gender, dailyWaterGoal, avatarURL } = req.user;
+    const { _id, email, name, gender, dailyWaterGoal, avatarURL } = req.user;
 
-    res.send({ email, name, gender, dailyWaterGoal, avatarURL });
+    res.send({ _id, email, name, gender, dailyWaterGoal, avatarURL });
   } catch (error) {
     next(error);
   }
