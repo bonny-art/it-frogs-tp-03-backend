@@ -2,25 +2,16 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
   const fullReqUrl = req.get("Referer");
   const reqUrlObject = new URL(fullReqUrl);
   const reqDomain = reqUrlObject.host;
-  console.log("🚀 ~ reqDomain:", reqDomain);
 
   const serverDomain = req.get("host");
-  console.log("🚀 ~ serverDomain:", serverDomain);
 
   const isSameDomain = reqDomain === serverDomain;
-  console.log("🚀 ~ isSameDomain:", isSameDomain);
 
   const domain = isSameDomain
     ? "https://nadiiapavliuchenko.github.io/"
     : `${reqUrlObject.protocol}//${reqUrlObject.host}/`;
-  console.log("🚀 ~ domain:", domain);
 
   const verificationPath = `${domain}WaterTrackerFrontend/verification/${user.verificationToken}`;
-  console.log("🚀 ~ verificationPath:", verificationPath);
-
-  const verificationPathBack = `${req.protocol}://${req.get(
-    "host"
-  )}/api/auth/verify/${user.verificationToken}`;
 
   const htmlContent = `
   <!DOCTYPE html>
@@ -108,13 +99,19 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
 };
 
 export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
-  const referer = req.get("Referer");
+  const fullReqUrl = req.get("Referer");
+  const reqUrlObject = new URL(fullReqUrl);
+  const reqDomain = reqUrlObject.host;
 
-  const resetPasswordPath = `${referer}WaterTrackerFrontend/recovery/${user.passwordRecoveryToken}`;
+  const serverDomain = req.get("host");
 
-  const resetPasswordPathBack = `${req.protocol}://${req.get(
-    "host"
-  )}/api/auth/verify/${user.passwordRecoveryToken}`;
+  const isSameDomain = reqDomain === serverDomain;
+
+  const domain = isSameDomain
+    ? "https://nadiiapavliuchenko.github.io/"
+    : `${reqUrlObject.protocol}//${reqUrlObject.host}/`;
+
+  const resetPasswordPath = `${domain}WaterTrackerFrontend/verification/${user.verificationToken}`;
 
   const htmlContent = `
   <!DOCTYPE html>
