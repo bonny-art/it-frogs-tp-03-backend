@@ -117,6 +117,7 @@ export const addWaterIntakeRecord = async (req, res, next) => {
 
 export const updateWaterIntakeRecord = async (req, res, next) => {
   const { waterRecordId } = req.params;
+  console.log("🚀 ~ req.body:", req.body);
 
   const { date, ml, timeZoneOffset } = req.body;
 

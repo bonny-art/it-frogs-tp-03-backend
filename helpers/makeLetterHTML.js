@@ -1,9 +1,17 @@
-import path from "path";
-
 export const makeEmailVerificationLetterHTML = (req, user, subject) => {
-  const referer = req.get("Referer");
+  const reqDomain = req.get("Referer");
+  const serverDomain = `${req.protocol}://${req.get("host")}/`;
+  const isSameDomain = reqDomain === serverDomain;
+  console.log("🚀 ~ reqDomain:", reqDomain);
+  console.log("🚀 ~ serverDomain:", serverDomain);
 
-  const verificationPath = `${referer}WaterTrackerFrontend/verification/${user.verificationToken}`;
+  const domain = isSameDomain
+    ? "https://nadiiapavliuchenko.github.io"
+    : reqDomain;
+  console.log("🚀 ~ domain:", domain);
+
+  const verificationPath = `${domain}WaterTrackerFrontend/verification/${user.verificationToken}`;
+  console.log("🚀 ~ verificationPath:", verificationPath);
 
   const verificationPathBack = `${req.protocol}://${req.get(
     "host"
