@@ -1,10 +1,10 @@
 export const makeEmailVerificationLetterHTML = (req, user, subject) => {
-  const fullUrl = req.get("Referer");
-  const urlObject = new URL(fullUrl);
-  const reqDomain = `${urlObject.protocol}//${urlObject.host}/`;
+  const fullReqUrl = req.get("Referer");
+  const reqUrlObject = new URL(fullReqUrl);
+  const reqDomain = reqUrlObject.host;
   console.log("🚀 ~ reqDomain:", reqDomain);
 
-  const serverDomain = `${req.protocol}://${req.get("host")}/`;
+  const serverDomain = req.get("host");
   console.log("🚀 ~ serverDomain:", serverDomain);
 
   const isSameDomain = reqDomain === serverDomain;
@@ -12,7 +12,7 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
 
   const domain = isSameDomain
     ? "https://nadiiapavliuchenko.github.io"
-    : reqDomain;
+    : `${reqUrlObject.protocol}//${reqUrlObject.host}/`;
   console.log("🚀 ~ domain:", domain);
 
   const verificationPath = `${domain}WaterTrackerFrontend/verification/${user.verificationToken}`;
