@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.8",
+    "version": "1.0.9",
     "title": "Water Tracker",
     "description": "A web application that allows you to track daily water consumption"
   },
@@ -402,6 +402,9 @@
                     },
                     "gender": {
                       "$ref": "#/components/gender"
+                    },
+                    "dailyWaterGoal": {
+                      "$ref": "#/components/dailyWaterGoal"
                     }
                   }
                 }
@@ -434,13 +437,8 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
+                "type": "file",
+                "format": "binary"
               }
             }
           }
@@ -1050,7 +1048,7 @@
       "type": "string",
       "format": "ObjectId",
       "description": "Backend-generated unique identifier",
-      "example": "ObjectId('5f50c31b8e7b9e432c3fb8c3')"
+      "example": "5f50c31b8e7b9e432c3fb8c3"
     },
     "date": {
       "type": "string",
