@@ -1,9 +1,14 @@
 export const makeEmailVerificationLetterHTML = (req, user, subject) => {
-  const reqDomain = req.get("Referer");
-  const serverDomain = `${req.protocol}://${req.get("host")}/`;
-  const isSameDomain = reqDomain === serverDomain;
+  const fullUrl = req.get("Referer");
+  const urlObject = new URL(fullUrl);
+  const reqDomain = `${urlObject.protocol}//${urlObject.host}/`;
   console.log("🚀 ~ reqDomain:", reqDomain);
+
+  const serverDomain = `${req.protocol}://${req.get("host")}/`;
   console.log("🚀 ~ serverDomain:", serverDomain);
+
+  const isSameDomain = reqDomain === serverDomain;
+  console.log("🚀 ~ isSameDomain:", isSameDomain);
 
   const domain = isSameDomain
     ? "https://nadiiapavliuchenko.github.io"
