@@ -44,6 +44,8 @@ export const addWaterIntakeRecord = async (req, res, next) => {
   console.log("🚀 ~ entryDate:", entryDate);
 
   const { dailyWaterGoal, _id } = req.user;
+  console.log("req.user :>> ", req.user);
+  console.log("🚀 ~ dailyWaterGoal:", dailyWaterGoal);
 
   const params = {
     entryDate,
@@ -53,10 +55,11 @@ export const addWaterIntakeRecord = async (req, res, next) => {
   const update = {
     $setOnInsert: { entryDate, dailyWaterGoal },
   };
+  console.log("🚀 ~ update:", update);
 
   const options = {
     new: true,
-    upsert: true,
+    // upsert: true,
     runValidators: true,
   };
 
@@ -66,10 +69,11 @@ export const addWaterIntakeRecord = async (req, res, next) => {
       update,
       options
     );
-    console.log("🚀 ~ dailyWater:", dailyWater);
+    console.log("🚀 ~ dailyWater111:", dailyWater);
 
-    const waterPercentage =
-      ((dailyWater.consumedWater + ml) / dailyWater.dailyWaterGoal) * 100;
+    const waterPercentage = Math.round(
+      ((dailyWater.consumedWater + ml) / dailyWater.dailyWaterGoal) * 100
+    );
 
     const payload = {
       ml,
@@ -157,7 +161,9 @@ export const updateWaterIntakeRecord = async (req, res, next) => {
 
     const consumedWater = dailyWater.consumedWater - waterIntake.ml + ml;
 
-    const waterPercentage = (consumedWater / dailyWater.dailyWaterGoal) * 100;
+    const waterPercentage = Math.round(
+      (consumedWater / dailyWater.dailyWaterGoal) * 100
+    );
 
     const payload = {
       _id: waterIntake._id,
@@ -206,16 +212,12 @@ export const removeWaterIntakeRecord = async (req, res, next) => {
   const { waterRecordId } = req.params;
   const { date, timeZoneOffset } = req.body;
 
+  const isoDate = new Date(date);
+  console.log("🚀 ~ isoDate:", isoDate);
+  isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
+  console.log("🚀 ~ isoDate:", isoDate);
+
   try {
-    if (!date) {
-      throw HttpError(400, "Incorrectly made request");
-    }
-
-    const isoDate = new Date(date);
-    console.log("🚀 ~ isoDate:", isoDate);
-    isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
-    console.log("🚀 ~ isoDate:", isoDate);
-
     const isoString = isoDate.toISOString();
 
     console.log("🚀 ~ isoString:", isoString);
@@ -248,10 +250,11 @@ export const removeWaterIntakeRecord = async (req, res, next) => {
       throw HttpError(404, "There is no such record of water intake");
     }
 
-    const waterPercentage =
+    const waterPercentage = Math.round(
       ((dailyWater.consumedWater - waterIntake.ml) /
         dailyWater.dailyWaterGoal) *
-      100;
+        100
+    );
 
     const payload = {
       _id: waterIntake._id,

@@ -38,7 +38,7 @@ export const updateWaterRate = async (req, res, next) => {
     const dailyWater = await waterServices.findWaterRecord(params);
 
     const consumedWaterPercentage = dailyWater
-      ? (dailyWater.consumedWater / dailyWaterGoal) * 100
+      ? Math.round((dailyWater.consumedWater / dailyWaterGoal) * 100)
       : 0;
 
     const newDailyWater = await waterServices.updateWaterRecord(params, {
