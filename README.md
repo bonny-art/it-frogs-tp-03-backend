@@ -1,5 +1,5 @@
-Svitlana Otenko
-Andrii Dovhaniuk
+Svitlana Otenko  
+Andrii Dovhaniuk  
 Andrii Koliadenko
 Ivan Imenynnyk
 Iryna Trysh
