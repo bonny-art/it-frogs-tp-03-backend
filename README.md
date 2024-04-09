@@ -1,6 +1,10 @@
  # Water tracker
 
-## The project was made by:#  
+"Water tracker" is a web application that allows to monitor daily water consumption.
+
+---
+
+### The project was made by: #
 
 Svitlana Otenko  
 Andrii Dovhaniuk  
@@ -14,14 +18,14 @@ Serhii Krysiuk
 Dana Dobryshkina  
 Volodymyr Shevchenko  
 
-"Water tracker" is a web application that allows to monitor daily water consumption.
-
-## Used technologies:#
+### Used technologies: #
 NodeJs, React, Redux, Git, Express, Swagger,
 
 ___
 
-## Над проектом працювали:#
+"Water tracker" - веб-застосунок, який дозволяє стежити за щоденним вживанням води. 
+
+### Над проектом працювали: #
 
 Світлана Отенко  
 Андрій Довганюк  
@@ -35,9 +39,6 @@ ___
 Дана Добришкіна  
 Володимир Шевченко  
 
-"Water tracker" - веб-застосунок, який дозволяє стежити за щоденним вживанням води. 
+### При роботі з проектом були використані наступні технології та середовища: #
 
-## При роботі з проектом були використані наступні технології та середовища:#
-
-Використовувані технології:
 NodeJs, React, Redux, Git, Express, Swagger,
