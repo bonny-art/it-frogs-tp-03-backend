@@ -3,7 +3,7 @@ import express from "express";
 import validateBody from "../helpers/validateBody.js";
 import validateID from "../helpers/validateID.js";
 
-import { waterDeleteSchema, waterRecSchema } from "../schemas/waterSchemas.js";
+import { waterRecSchema } from "../schemas/waterSchemas.js";
 import {
   addWaterIntakeRecord,
   removeWaterIntakeRecord,
@@ -21,11 +21,6 @@ waterRouter.put(
   updateWaterIntakeRecord
 );
 
-waterRouter.delete(
-  "/:waterRecordId",
-  validateID,
-  validateBody(waterDeleteSchema),
-  removeWaterIntakeRecord
-);
+waterRouter.delete("/:waterRecordId", validateID, removeWaterIntakeRecord);
 
 export default waterRouter;

@@ -1,3 +1,6 @@
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Types;
+
 import HttpError from "../helpers/HttpError.js";
 import * as waterServices from "../services/waterServices.js";
 
@@ -29,23 +32,14 @@ export const addWaterIntakeRecord = async (req, res, next) => {
   const { date, ml, timeZoneOffset } = req.body;
 
   const isoDate = new Date(date);
-  console.log("🚀 ~ isoDate:", isoDate);
   isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
-  console.log("🚀 ~ isoDate:", isoDate);
-
   const isoString = isoDate.toISOString();
-  console.log("🚀 ~ isoString:", isoString);
   const consumedAt = new Date(isoString.replace(/\.\d{3}/, ".000"));
-  console.log("🚀 ~ consumedAt:", consumedAt);
 
   const entryDate = new Date(new Date(isoString));
-  console.log("🚀 ~ entryDate:", entryDate);
   entryDate.setUTCHours(0, 0, 0, 0);
-  console.log("🚀 ~ entryDate:", entryDate);
 
   const { dailyWaterGoal, _id } = req.user;
-  console.log("req.user :>> ", req.user);
-  console.log("🚀 ~ dailyWaterGoal:", dailyWaterGoal);
 
   const params = {
     entryDate,
@@ -55,7 +49,6 @@ export const addWaterIntakeRecord = async (req, res, next) => {
   const update = {
     $setOnInsert: { entryDate, dailyWaterGoal },
   };
-  console.log("🚀 ~ update:", update);
 
   const options = {
     new: true,
@@ -69,7 +62,6 @@ export const addWaterIntakeRecord = async (req, res, next) => {
       update,
       options
     );
-    console.log("🚀 ~ dailyWater111:", dailyWater);
 
     const waterPercentage = Math.round(
       ((dailyWater.consumedWater + ml) / dailyWater.dailyWaterGoal) * 100
@@ -117,30 +109,19 @@ export const addWaterIntakeRecord = async (req, res, next) => {
 
 export const updateWaterIntakeRecord = async (req, res, next) => {
   const { waterRecordId } = req.params;
-  console.log("🚀 ~ req.body:", req.body);
 
   const { date, ml, timeZoneOffset } = req.body;
 
   const isoDate = new Date(date);
-  console.log("🚀 ~ isoDate:", isoDate);
   isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
-  console.log("🚀 ~ isoDate:", isoDate);
-
   const isoString = isoDate.toISOString();
-  console.log("🚀 ~ isoString:", isoString);
   const consumedAt = new Date(isoString.replace(/\.\d{3}/, ".000"));
-  console.log("🚀 ~ consumedAt:", consumedAt);
 
   const entryDate = new Date(new Date(isoString));
-  console.log("🚀 ~ entryDate:", entryDate);
   entryDate.setUTCHours(0, 0, 0, 0);
-  console.log("🚀 ~ entryDate:", entryDate);
-
-  const { _id } = req.user;
 
   const params = {
-    entryDate,
-    userId: _id,
+    "waterIntakes._id": waterRecordId,
   };
 
   try {
@@ -162,12 +143,13 @@ export const updateWaterIntakeRecord = async (req, res, next) => {
 
     const consumedWater = dailyWater.consumedWater - waterIntake.ml + ml;
 
+    console.log("dailyWater.dailyWaterGoal :>> ", dailyWater.dailyWaterGoal);
     const waterPercentage = Math.round(
       (consumedWater / dailyWater.dailyWaterGoal) * 100
     );
 
     const payload = {
-      _id: waterIntake._id,
+      water_id: waterIntake._id,
       ml,
       consumedAt,
       waterPercentage,
@@ -175,7 +157,7 @@ export const updateWaterIntakeRecord = async (req, res, next) => {
     };
 
     const newDailyWater = await waterServices.updateWaterIntake(
-      params,
+      dailyWater._id,
       payload
     );
 
@@ -211,34 +193,16 @@ export const updateWaterIntakeRecord = async (req, res, next) => {
 
 export const removeWaterIntakeRecord = async (req, res, next) => {
   const { waterRecordId } = req.params;
-  const { date, timeZoneOffset } = req.body;
 
-  const isoDate = new Date(date);
-  console.log("🚀 ~ isoDate:", isoDate);
-  isoDate.setMinutes(isoDate.getMinutes() - timeZoneOffset);
-  console.log("🚀 ~ isoDate:", isoDate);
+  const params = {
+    "waterIntakes._id": waterRecordId,
+  };
 
   try {
-    const isoString = isoDate.toISOString();
-
-    console.log("🚀 ~ isoString:", isoString);
-
-    const entryDate = new Date(new Date(isoString));
-    console.log("🚀 ~ entryDate:", entryDate);
-    entryDate.setUTCHours(0, 0, 0, 0);
-    console.log("🚀 ~ entryDate:", entryDate);
-
-    const { _id } = req.user;
-
-    const params = {
-      entryDate,
-      userId: _id,
-    };
-
     const dailyWater = await waterServices.findWaterRecord(params);
 
     if (!dailyWater) {
-      throw HttpError(404, "There are no records on this day");
+      throw HttpError(404, "There is no such record");
     }
 
     const { waterIntakes } = dailyWater;
