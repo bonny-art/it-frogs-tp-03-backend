@@ -17,7 +17,7 @@ Dana Dobryshkina
 Volodymyr Shevchenko  
 
 ### Used technologies: #
-NodeJs, React, Redux, Git, Express, Swagger,
+NodeJs, React, Redux, Git, Express, Swagger
 
 ___
 # "Water tracker"
@@ -39,4 +39,4 @@ ___
 
 ### При роботі з проектом були використані наступні технології та середовища: #
 
-NodeJs, React, Redux, Git, Express, Swagger,
+NodeJs, React, Redux, Git, Express, Swagger
