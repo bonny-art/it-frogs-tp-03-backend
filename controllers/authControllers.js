@@ -214,9 +214,9 @@ export const loginUser = async (req, res, next) => {
       user: {
         email: loggedInUser.email,
         name: loggedInUser.name,
-        dailyWaterGoal: loggedInUser.dailyWaterGoal,
-        avatarURL: loggedInUser.avatarURL,
         gender: loggedInUser.gender,
+        avatarURL: loggedInUser.avatarURL,
+        dailyWaterGoal: loggedInUser.dailyWaterGoal,
       },
     });
   } catch (error) {

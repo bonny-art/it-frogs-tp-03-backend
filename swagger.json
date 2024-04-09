@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.8",
+    "version": "1.0.9",
     "title": "Water Tracker",
     "description": "A web application that allows you to track daily water consumption"
   },
@@ -402,6 +402,9 @@
                     },
                     "gender": {
                       "$ref": "#/components/gender"
+                    },
+                    "dailyWaterGoal": {
+                      "$ref": "#/components/dailyWaterGoal"
                     }
                   }
                 }
@@ -424,7 +427,7 @@
     "/user/avatars": {
       "patch": {
         "tags": ["User"],
-        "summary": "Upload user avatar",
+        "summary": "Update user avatar",
 
         "security": [{ "Bearer": [] }],
 
@@ -434,13 +437,8 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
+                "type": "file",
+                "format": "binary"
               }
             }
           }
@@ -533,26 +531,20 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "user": {
-                      "type": "object",
-                      "description": "User object",
-                      "properties": {
-                        "_id": {
-                          "$ref": "#/components/_id"
-                        },
-                        "name": {
-                          "$ref": "#/components/name"
-                        },
-                        "email": {
-                          "$ref": "#/components/email"
-                        },
-                        "avatarURL": {
-                          "$ref": "#/components/avatarURL"
-                        },
-                        "gender": {
-                          "$ref": "#/components/gender"
-                        }
-                      }
+                    "name": {
+                      "$ref": "#/components/name"
+                    },
+                    "email": {
+                      "$ref": "#/components/email"
+                    },
+                    "avatarURL": {
+                      "$ref": "#/components/avatarURL"
+                    },
+                    "gender": {
+                      "$ref": "#/components/gender"
+                    },
+                    "dailyWaterGoal": {
+                      "$ref": "#/components/dailyWaterGoal"
                     }
                   }
                 }
@@ -756,7 +748,17 @@
     "/water/{waterRecordId}": {
       "put": {
         "tags": ["Water"],
-        "summary": "Change water record",
+        "summary": "Update water record",
+
+        "parameters": [
+          {
+            "name": "waterRecordId",
+            "in": "path",
+            "type": "string",
+            "description": "Record id",
+            "required": true
+          }
+        ],
 
         "security": [{ "Bearer": [] }],
 
@@ -797,34 +799,34 @@
 
       "delete": {
         "tags": ["Water"],
-        "summary": "Delete user water record",
+        "summary": "Delete water record",
+
+        "parameters": [
+          {
+            "name": "waterRecordId",
+            "in": "path",
+            "type": "string",
+            "description": "Record id",
+            "required": true
+          }
+        ],
 
         "security": [{ "Bearer": [] }],
 
-        "requestBody": {
-          "description": "User data record date",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": true,
-                "properties": {
-                  "date": {
-                    "$ref": "#/components/date"
-                  },
-                  "timeZoneOffset": {
-                    "$ref": "#/components/timeZoneOffset"
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "newDailyWater": {
+                      "$ref": "#/components/waterResponse"
+                    }
                   }
                 }
               }
             }
-          }
-        },
-
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
           },
           "400": {
             "$ref": "#/components/responses/400"
@@ -842,7 +844,7 @@
     "/today": {
       "get": {
         "tags": ["WaterToday"],
-        "summary": "Get current date water records",
+        "summary": "Get daily water records",
 
         "parameters": [
           {
@@ -1050,7 +1052,7 @@
       "type": "string",
       "format": "ObjectId",
       "description": "Backend-generated unique identifier",
-      "example": "ObjectId('5f50c31b8e7b9e432c3fb8c3')"
+      "example": "5f50c31b8e7b9e432c3fb8c3"
     },
     "date": {
       "type": "string",
@@ -1066,9 +1068,9 @@
     "gender": {
       "type": "string",
       "description": "User gender",
-      "default": "female",
-      "enum": ["female", "male"],
-      "example": "female"
+      "default": "woman",
+      "enum": ["man", "woman"],
+      "example": "woman"
     },
     "email": {
       "type": "string",
