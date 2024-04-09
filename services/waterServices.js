@@ -183,11 +183,11 @@ export const addWaterIntake = async (params, payload) => {
  * This operation ensures that the user's water intake record is accurately updated with the latest consumption details.
  */
 
-export const updateWaterIntake = async (params, payload) => {
-  const { _id, ml, consumedAt, waterPercentage, consumedWater } = payload;
+export const updateWaterIntake = async (_id, payload) => {
+  const { water_id, ml, consumedAt, waterPercentage, consumedWater } = payload;
 
-  const waterRecord = await WaterRecord.findOneAndUpdate(
-    params,
+  const waterRecord = await WaterRecord.findByIdAndUpdate(
+    _id,
     {
       $set: {
         consumedWaterPercentage: waterPercentage,
@@ -197,7 +197,7 @@ export const updateWaterIntake = async (params, payload) => {
       },
     },
     {
-      arrayFilters: [{ "elem._id": _id }],
+      arrayFilters: [{ "elem._id": water_id }],
       new: true,
       runValidators: true,
     }
