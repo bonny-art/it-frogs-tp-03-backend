@@ -748,7 +748,17 @@
     "/water/{waterRecordId}": {
       "put": {
         "tags": ["Water"],
-        "summary": "Change water record",
+        "summary": "Update water record",
+
+        "parameters": [
+          {
+            "name": "waterRecordId",
+            "in": "path",
+            "type": "string",
+            "description": "Record id",
+            "required": true
+          }
+        ],
 
         "security": [{ "Bearer": [] }],
 
@@ -791,32 +801,32 @@
         "tags": ["Water"],
         "summary": "Delete water record",
 
+        "parameters": [
+          {
+            "name": "waterRecordId",
+            "in": "path",
+            "type": "string",
+            "description": "Record id",
+            "required": true
+          }
+        ],
+
         "security": [{ "Bearer": [] }],
 
-        "requestBody": {
-          "description": "User data record date",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": true,
-                "properties": {
-                  "date": {
-                    "$ref": "#/components/date"
-                  },
-                  "timeZoneOffset": {
-                    "$ref": "#/components/timeZoneOffset"
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "newDailyWater": {
+                      "$ref": "#/components/waterResponse"
+                    }
                   }
                 }
               }
             }
-          }
-        },
-
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200"
           },
           "400": {
             "$ref": "#/components/responses/400"
