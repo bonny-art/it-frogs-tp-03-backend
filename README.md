@@ -1,7 +1,9 @@
+The project was made by:  
+
 Svitlana Otenko  
 Andrii Dovhaniuk  
 Andrii Koliadenko
-Ivan Imenynnyk
+Ivan Imenynnyk  
 Iryna Trysh
 Bohdan Solomych
 Oleksii Pokormiakho
@@ -16,7 +18,7 @@ Used technologies:
 NodeJs, React, Redux, Git, Express, Swagger,
 
 
-Світлана Отенко
+Світлана Отенко <br/>
 Андрій Довганюк
 Андрій Коляденко
 Іван Іменинник
