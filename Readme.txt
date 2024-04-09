@@ -1,7 +1,7 @@
 Svitlana Otenko
-Ivan Imenynnyk
 Andrii Dovhaniuk
 Andrii Koliadenko
+Ivan Imenynnyk
 Iryna Trysh
 Bohdan Solomych
 Oleksii Pokormiakho
@@ -12,11 +12,14 @@ Volodymyr Shevchenko
 
 "Water tracker" is a web application that allows to monitor daily water consumption.
 
+Used technologies:
+NodeJs, React, Redux, Git, Express, Swagger,
+
 
 Світлана Отенко
-Іван Іменинник
 Андрій Довганюк
 Андрій Коляденко
+Іван Іменинник
 Ірина Триш
 Богдан Соломич 
 Олексій Покормяхо
@@ -29,4 +32,5 @@ Volodymyr Shevchenko
 
 При роботі з проектом були використані наступні технології та середовища:
 
+Використовувані технології:
 NodeJs, React, Redux, Git, Express, Swagger,
