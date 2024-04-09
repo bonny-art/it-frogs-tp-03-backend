@@ -1,4 +1,6 @@
- # Water tracker
+<font color="darkblue">
+# Water tracker
+</font>
 
 "Water tracker" is a web application that allows to monitor daily water consumption.
 
