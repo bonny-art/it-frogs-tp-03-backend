@@ -1,5 +1,5 @@
 
-# Water tracker
+# "Water tracker"
 "Water tracker" is a web application that allows to monitor daily water consumption.
 
 ### The project was made by: #
@@ -20,7 +20,7 @@ Volodymyr Shevchenko
 NodeJs, React, Redux, Git, Express, Swagger,
 
 ___
-# Water tracker
+# "Water tracker"
 "Water tracker" - веб-застосунок, який дозволяє стежити за щоденним вживанням води. 
 
 ### Над проектом працювали: #
