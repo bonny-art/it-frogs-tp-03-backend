@@ -4,7 +4,7 @@ import crypto from "node:crypto";
 import HttpError from "../helpers/HttpError.js";
 import * as usersServ from "../services/userServices.js";
 
-// import { sendMail } from "../services/sendMailServices.js";
+import { sendMail } from "../services/sendMailServices.js";
 import * as makeLetterHTML from "../helpers/makeLetterHTML.js";
 
 /**
@@ -60,14 +60,11 @@ export const createUser = async (req, res, next) => {
       subject
     );
 
-    // sendMail(letter);
+    sendMail(letter);
 
     res.status(201).send({
-      user: {
-        email: newUser.email,
-
-        ...letter,
-      },
+      _id: newUser._id,
+      email: newUser.email,
     });
   } catch (error) {
     next(error);
@@ -156,11 +153,10 @@ export const reVerificateUser = async (req, res, next) => {
       subject
     );
 
-    // sendMail(letter);
+    sendMail(letter);
 
     res.send({
       message: `Verification email sent.`,
-      ...letter,
     });
   } catch (error) {
     next(error);
@@ -290,6 +286,7 @@ export const sendPasswordRecoveryEmail = async (req, res, next) => {
     const newUser = await usersServ.updateUser(user._id, {
       passwordRecoveryToken,
     });
+    console.log("🚀 ~ newUser:", newUser);
 
     const subject = "Your Account Password Reset Request";
     const letter = makeLetterHTML.makePasswordRecoveryLetterHTML(
@@ -298,7 +295,7 @@ export const sendPasswordRecoveryEmail = async (req, res, next) => {
       subject
     );
 
-    // sendMail(letter);
+    sendMail(letter);
 
     res.json({
       message:
