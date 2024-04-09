@@ -197,40 +197,40 @@ export const removeWaterIntakeRecord = async (req, res, next) => {
   const params = {
     "waterIntakes._id": waterRecordId,
   };
-  console.log("params:", params);
+
   try {
     const dailyWater = await waterServices.findWaterRecord(params);
 
-    // if (!dailyWater) {
-    //   throw HttpError(404, "There is no such record");
-    // }
+    if (!dailyWater) {
+      throw HttpError(404, "There is no such record");
+    }
 
-    // const { waterIntakes } = dailyWater;
+    const { waterIntakes } = dailyWater;
 
-    // const waterIntake = waterIntakes.find(
-    //   ({ _id }) => String(_id) === waterRecordId
-    // );
+    const waterIntake = waterIntakes.find(
+      ({ _id }) => String(_id) === waterRecordId
+    );
 
-    // if (!waterIntake) {
-    //   throw HttpError(404, "There is no such record of water intake");
-    // }
+    if (!waterIntake) {
+      throw HttpError(404, "There is no such record of water intake");
+    }
 
-    // const waterPercentage = Math.round(
-    //   ((dailyWater.consumedWater - waterIntake.ml) /
-    //     dailyWater.dailyWaterGoal) *
-    //     100
-    // );
+    const waterPercentage = Math.round(
+      ((dailyWater.consumedWater - waterIntake.ml) /
+        dailyWater.dailyWaterGoal) *
+        100
+    );
 
-    // const payload = {
-    //   _id: waterIntake._id,
-    //   ml: waterIntake.ml,
-    //   waterPercentage,
-    // };
+    const payload = {
+      _id: waterIntake._id,
+      ml: waterIntake.ml,
+      waterPercentage,
+    };
 
-    // const newDailyWater = await waterServices.removeWaterIntake(
-    //   params,
-    //   payload
-    // );
+    const newDailyWater = await waterServices.removeWaterIntake(
+      params,
+      payload
+    );
 
     res.send({ newDailyWater });
   } catch (error) {
