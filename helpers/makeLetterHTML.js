@@ -77,8 +77,6 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
       <a href="${verificationPath}" class="confirm-button">Activate Account</a>
       <p>If you encounter any issues with the button, you can also activate your account using this link:</p>
       <p><a href="${verificationPath}">${verificationPath}</a></p>
-      <p>For direct backend confirmation (temporary link):</p>
-      <p><a href="${verificationPathBack}">${verificationPathBack}</a></p>
     </div>
     <div class="footer">
       <p>Need help? Reach out to our support team for assistance.</p>
@@ -94,8 +92,7 @@ export const makeEmailVerificationLetterHTML = (req, user, subject) => {
     html: htmlContent,
   };
 
-  // return letter;
-  return { verificationPath };
+  return letter;
 };
 
 export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
@@ -111,7 +108,7 @@ export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
     ? "https://nadiiapavliuchenko.github.io/"
     : `${reqUrlObject.protocol}//${reqUrlObject.host}/`;
 
-  const resetPasswordPath = `${domain}WaterTrackerFrontend/verification/${user.verificationToken}`;
+  const resetPasswordPath = `${domain}WaterTrackerFrontend/recovery/${user.passwordRecoveryToken}`;
 
   const htmlContent = `
   <!DOCTYPE html>
@@ -178,8 +175,7 @@ export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
       <a href="${resetPasswordPath}" class="reset-button">Reset Password</a>
       <p>If the button above does not work, please copy and paste the following link into your browser:</p>
       <p><a href="${resetPasswordPath}">${resetPasswordPath}</a></p>
-      <h2>Лінка для підтверждення напряму на бек-енді (тимчасова)</h2>
-      <p><a href="${resetPasswordPathBack}">${resetPasswordPathBack}</a></p>
+      
     </div>
     <div class="footer">
       <p>If you have any questions or need assistance, please don't hesitate to contact us.</p>
@@ -195,6 +191,5 @@ export const makePasswordRecoveryLetterHTML = (req, user, subject) => {
     html: htmlContent,
   };
 
-  // return letter;
-  return { resetPasswordPath };
+  return letter;
 };
