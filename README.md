@@ -1,6 +1,6 @@
 
-<span style="color:red"> # Water tracker # </span>
-
+# Water tracker
+<span style="color:blue">some *blue* text</span>
 "Water tracker" is a web application that allows to monitor daily water consumption.
 
 ---
