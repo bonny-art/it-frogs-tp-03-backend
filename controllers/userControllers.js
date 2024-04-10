@@ -42,7 +42,13 @@ export const uploadAvatar = async (req, res, next) => {
 
     const result = await cloudinary.uploader.upload(req.file.path, {
       transformation: [
-        { width: 80, height: 80, crop: "fill", gravity: "auto", radius: "max" },
+        {
+          width: 160,
+          height: 160,
+          crop: "fill",
+          gravity: "auto",
+          radius: "max",
+        },
       ],
       format: "png",
     });
@@ -141,6 +147,35 @@ export const updateUser = async (req, res, next) => {
   }
 };
 
+export const validatePassword = async (req, res, next) => {
+  const userPassword = req.body.password;
+  const query = { userId: req.user.id };
+
+  try {
+    const { password } = await usersServ.getUserById(req.user._id);
+
+    const isUserPasswordValid = await usersServ.isPasswordValid(
+      userPassword,
+      password
+    );
+
+    if (!isUserPasswordValid) {
+      throw HttpError(401, "You don`t have permissions to delete this account");
+    }
+
+    await usersServ.updateUser(req.user.id, {
+      isPasswordVerified: true,
+    });
+
+    res.send({
+      message: "Password is valid",
+      isPasswordCorrect: true,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 /**
  * Controller for deleting a user account.
  *
@@ -163,28 +198,28 @@ export const updateUser = async (req, res, next) => {
  */
 
 export const deleteUser = async (req, res, next) => {
-  const userPassword = req.body.password;
-  const query = { userId: req.user.id };
+  const { _id, isPasswordVerified } = req.user;
+
+  const query = { userId: _id };
 
   try {
-    const { password } = await usersServ.getUserById(req.user._id);
-
-    const isUserPasswordValid = await usersServ.isPasswordValid(
-      userPassword,
-      password
-    );
-
-    if (!isUserPasswordValid) {
+    if (!isPasswordVerified) {
       throw HttpError(401, "You don`t have permissions to delete this account");
     }
 
-    const user = await usersServ.deleteUser(req.user.id);
+    const user = await usersServ.deleteUser(_id);
 
     const result = await waterServices.deleteWaterRecords(query);
 
     const { email, name } = user;
 
-    res.send({ email, name, recordsDeleted: result.deletedCount });
+    res.send({
+      email,
+      name,
+      recordsDeleted: result.deletedCount,
+      isDeleted: true,
+    });
+    // res.send({ isDeleted: true });
   } catch (error) {
     next(error);
   }
