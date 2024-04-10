@@ -45,6 +45,10 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    isPasswordVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     versionKey: false,

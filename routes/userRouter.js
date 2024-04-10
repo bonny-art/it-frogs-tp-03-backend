@@ -3,13 +3,17 @@ import upload from "../services/uploadServices.js";
 
 import validateBody from "../helpers/validateBody.js";
 
-import { deleteUserSchema, updateUserSchema } from "../schemas/userSchemas.js";
+import {
+  updateUserSchema,
+  validatePasswordSchema,
+} from "../schemas/userSchemas.js";
 
 import {
   uploadAvatar,
   getCurrentUser,
   updateUser,
   deleteUser,
+  validatePassword,
 } from "../controllers/userControllers.js";
 
 const userRouter = express.Router();
@@ -20,6 +24,12 @@ userRouter.get("/current", getCurrentUser);
 
 userRouter.patch("/", validateBody(updateUserSchema), updateUser);
 
-userRouter.delete("/", validateBody(deleteUserSchema), deleteUser);
+userRouter.post(
+  "/validate",
+  validateBody(validatePasswordSchema),
+  validatePassword
+);
+
+userRouter.delete("/", deleteUser);
 
 export default userRouter;
