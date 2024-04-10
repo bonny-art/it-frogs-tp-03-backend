@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-const { META_PASSWORD, META_EMAIL } = process.env;
+const { META_PASSWORD, META_EMAIL, MAILTRAP_USER, MAILTRAP_PASS } = process.env;
 
 const nodemailerConfig = {
   host: "smtp.meta.ua",
@@ -12,6 +12,15 @@ const nodemailerConfig = {
   },
   tls: { rejectUnauthorized: false },
 };
+
+// const nodemailerConfig = {
+//   host: "sandbox.smtp.mailtrap.io",
+//   port: 2525,
+//   auth: {
+//     user: MAILTRAP_USER,
+//     pass: MAILTRAP_PASS,
+//   },
+// };
 
 const transporter = nodemailer.createTransport(nodemailerConfig);
 

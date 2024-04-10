@@ -162,7 +162,10 @@ export const loginUser = async (user) => {
 
   const loggedInUser = await User.findByIdAndUpdate(
     user._id,
-    { token },
+    {
+      token,
+      isPasswordVerified: false,
+    },
     { new: true }
   );
 
