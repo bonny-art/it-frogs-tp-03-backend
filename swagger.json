@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.9",
+    "version": "1.0.10",
     "title": "Water Tracker",
     "description": "A web application that allows you to track daily water consumption"
   },
@@ -303,11 +303,11 @@
     "/auth/verify/{verificationToken}": {
       "patch": {
         "tags": ["Auth"],
-        "summary": "Token from e-mail for e-mail verification",
+        "summary": "Email verification",
 
         "parameters": [
           {
-            "$ref": "#/components/verificationTokenParameters"
+            "$ref": "#/components/verificationTokenEmail"
           }
         ],
 
@@ -331,7 +331,7 @@
     "/auth/recover/{passwordRecoveryToken}": {
       "patch": {
         "tags": ["Auth"],
-        "summary": "Token from e-mail for recovery user password",
+        "summary": "Recovery user password",
 
         "parameters": [{ "$ref": "#/components/verificationTokenParameters" }],
 
@@ -474,6 +474,79 @@
       }
     },
 
+    "/user/validate": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Password confirmation",
+
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "description": "User password",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "$ref": "#/components/password"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "If password valid",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Password is valid"
+                    },
+                    "isPasswordCorrect": {
+                      "type": "boolean",
+                      "example": "true"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "If password not valid",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "You don`t have permissions to delete this account"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    },
+
     "/user": {
       "patch": {
         "tags": ["User"],
@@ -568,23 +641,6 @@
         "summary": "Delete user profile and data",
 
         "security": [{ "Bearer": [] }],
-
-        "requestBody": {
-          "description": "User password",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "password": {
-                    "$ref": "#/components/password"
-                  }
-                }
-              }
-            }
-          }
-        },
 
         "responses": {
           "200": {
@@ -979,13 +1035,7 @@
     "schemas": {
       "User (db)": {
         "type": "object",
-        "required": [
-          "name",
-          "email",
-          "password",
-          "avatarURL",
-          "verificationToken"
-        ],
+        "required": ["name", "email", "password", "avatarURL"],
         "properties": {
           "name": {
             "$ref": "#/components/name"
@@ -1015,6 +1065,9 @@
           },
           "dailyWaterGoal": {
             "$ref": "#/components/dailyWaterGoal"
+          },
+          "isPasswordVerified": {
+            "$ref": "#/components/isPasswordVerified"
           }
         }
       },
@@ -1115,8 +1168,11 @@
       "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MGU2ODE2MDc1ZGE5YWRhYmQ5YjRiMiIsImlhdCI6MTcxMjIyMjg2NiwiZXhwIjoxNzEyODI3NjY2fQ.6MbsBIgWPXbpqnXQB3FzlYsnTBGyEOZJo8HFkcIdzNo"
     },
     "verificationTokenEmail": {
+      "name": "verificationToken",
+      "in": "path",
       "type": "string",
-      "description": "verification token"
+      "description": "Verification token from e-mail",
+      "required": true
     },
     "verificationTokenParameters": {
       "name": "passwordRecoveryToken",
@@ -1124,6 +1180,11 @@
       "type": "string",
       "description": "Verification token from e-mail",
       "required": true
+    },
+    "isPasswordVerified": {
+      "type": "boolean",
+      "description": "is password verified before delete user",
+      "default": "false"
     },
     "dailyWaterGoal": {
       "type": "integer",
