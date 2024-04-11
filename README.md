@@ -1,42 +1,62 @@
+# Water Consumption Tracker - Backend Server
 
-# "Water tracker"
-"Water tracker" is a web application that allows to monitor daily water consumption.
+## Description.
 
-### The project was made by: #
+This server provides the operation of the Water Consumption Tracker web application. Using this application, users can:
 
-Svitlana Otenko  
-Andrii Dovhaniuk  
-Andrii Koliadenko  
-Ivan Imenynnyk  
-Iryna Trysh  
-Bohdan Solomych  
-Oleksii Pokormiakho  
-Nadiia Pavliuchenko  
-Serhii Krysiuk  
-Dana Dobryshkina  
-Volodymyr Shevchenko  
+- Determine their daily water consumption.
+- Record the portions of water consumed.
+- View statistics for previous days.
 
-### Used technologies: #
-NodeJs, React, Redux, Git, Express, Swagger
+## Server tasks
 
-___
-# "Water tracker"
-"Water tracker" - веб-застосунок, який дозволяє стежити за щоденним вживанням води. 
+- Authentication and authorization of users.
+- Processing and storage of water consumption data.
+- Providing APIs for data access and manipulation.
+- Sending emails to recover passwords.
+- Ensuring the security of user data.
 
-### Над проектом працювали: #
+## Team
 
-Світлана Отенко  
-Андрій Довганюк  
-Андрій Коляденко  
-Іван Іменинник  
-Ірина Триш  
-Богдан Соломич   
-Олексій Покормяхо  
-Надія Павлюченко  
-Сергій Крисюк  
-Дана Добришкіна  
-Володимир Шевченко  
+- Svitlana Otenko
+- Alexey Pokormyakho
+- Sergiy Krysiuk
 
-### При роботі з проектом були використані наступні технології та середовища: #
+## Technologies
 
-NodeJs, React, Redux, Git, Express, Swagger
+### Backend
+
+- Node.js
+- Express.js
+- Mongoose
+- jsonwebtoken
+- bcryptjs
+- nodemailer
+- multer
+- cors
+- dotenv
+
+### API documentation
+
+- Swagger
+- swagger-ui-express
+
+### Development
+
+- VSCode
+- Git/GitHub
+- Trello
+
+### Integration
+
+- cloudinary
+- gravatar
+
+### Database
+
+- MongoDB
+- Compass
+
+## API Documentation
+
+For information on how the API works, visit [API Docs](https://tracker-of-water-oqqk.onrender.com/api/api-docs/ "Swagger Extended Documentation").
