@@ -19,7 +19,7 @@ This server provides the operation of the Water Consumption Tracker web applicat
 ## Team
 
 - Svitlana Otenko
-- Alexey Pokormyakho
+- Oleksii Pokormiakho
 - Sergiy Krysiuk
 
 ## Technologies
